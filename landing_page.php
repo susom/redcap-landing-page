@@ -6,6 +6,7 @@ nav.navbar .ml-auto li.loggedInUsername,
 body > div:not(#pagecontainer){
     display:none !important;
 }
+body,
 #pagecontent{
     opacity:0;
 }
@@ -21,10 +22,15 @@ $(document).ready( function() {
     $('.nav.navbar-nav.ml-auto').unwrap();
     $('.navbar-brand img').attr("src","http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/redcap_logo.png");
 
+    // GET THE CUSTOM HOME PAGE NOTIFICATION , MUST BE BEFORE THE #newPageContent MANIPULATIONS
+    var info_text       = $("div.round").html();
+    var home_announce   = $('#pagecontent > div:not([id])').html();
+    $('#pagecontent > div:not([id])').remove();
+
     // do some rearranging of the furniture
     $('#pagecontent').unwrap().addClass("container");
     $('#pagecontent .row:first').remove();
-    $('#pagecontent').css("opacity",1);
+    $('body, #pagecontent').css("opacity",1);
 
     $('#newPageContent').detach().appendTo($("#pagecontent"));
     $('#footer').detach().appendTo($("#pagecontent")).addClass("row").removeClass("col-md-12");
@@ -32,6 +38,13 @@ $(document).ready( function() {
     var footer_content = $('#footer').html();
     $('#footer').empty();
     $("<div>").addClass("col-sm-12").html(footer_content).appendTo($("#footer"));
+
+    // READD the HOME PAGE NOTIFICATIONS & INFOTEXT
+    $("#home_announce").append(home_announce);
+    setTimeout(function(){
+        $("#home_announce").addClass("show");
+    },1500)
+    $("#info_text").append(info_text);
 
     window.onscroll = function () {
         if(window.scrollY > 57){
@@ -62,6 +75,10 @@ body {
     background-attachment: fixed;
     background-position: 31% 9%;
 }
+
+.button{
+    border-radius:5px;
+}
 /* NAV STUFF */
 #fixed_nav {
     position:fixed;
@@ -73,9 +90,29 @@ body {
     border:none !important;
     background-color:transparent !important;
 }
-#fixed_nav.scrolling{
-    background-color: #fff !important;
+#fixed_nav:after{
+    content:"";
+    width:100%;
+    height:100%;
+    background: #333;
+    opacity:0;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:-1;
+    transition:opacity .4s;
 }
+#fixed_nav:hover:after{
+    opacity:.5;
+}
+#fixed_nav.scrolling{
+}
+#fixed_nav.scrolling:after{
+    background-color: #fff;
+    box-shadow:0 0 3px #333;
+    opacity:1;
+}
+
 
 .navbar-brand {
     float:left;
@@ -164,7 +201,7 @@ body {
     background: url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/stanford_u.jpg) no-repeat;
     background-size: cover;
 }
-#newPageContent .splash:before{
+/*#newPageContent .splash:before{
     content:"";
     width:2000px;
     height:2000px;
@@ -174,7 +211,7 @@ body {
     top:0;
     left:0;
     z-index:-99;
-}
+}*/
 #newPageContent .splash {
     min-height:670px;
     position: relative;
@@ -182,18 +219,7 @@ body {
     overflow:hidden;
     text-transform: uppercase;
 }
-.splash h1{
-    margin-top:300px;
-    font-size:300%;
-    color:#fff;
-}
-.splash p{
-    color:#fff;
-}
-.splash a.button{
-    padding-left: 30px;
-    padding-right:30px;
-}
+
 
 .about p{
     padding:20px;
@@ -552,16 +578,83 @@ h3.icon{
     background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_piping.png) 50% no-repeat;
     background-size:20%;
 }
+
+.splash{
+    color:#fff;
+}
+
+.home_announce{
+    position:relative;
+}
+#home_announce{
+    position:absolute;
+    top:35%;
+    left:-800px;
+    transition:left 4s;
+}
+#home_announce.show{
+    left:0;
+}
+.splash a.button{
+    padding-left: 30px;
+    padding-right:30px;
+    border-radius:5px;
+    padding:5px 10px;
+}
+.home_announce{
+    position:relative;
+}
+.info_text{
+    position:relative;
+    text-transform:initial;
+}
+#info_text{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#info_text .info_alert{
+    font-size: 85%;
+    position: relative;
+    margin-bottom:10px;
+    padding-bottom:20px;
+}
+.info_alert:after{
+    content:"";
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0; left:0;
+    border-radius:5px;
+    background:#fff;
+    opacity:.65;
+    box-shadow:0px 0px 3px #333;
+    z-index:-1;
+}
+.info_alert h4{
+    text-align:center;
+    padding:5px 0;
+    border-radius:5px 5px 0 0;
+    background:#C41E3A;
+}
+.info_alert p{
+    font-size:85%;
+    margin:10px 10px 0;
+    text-shadow:1px 1px 1px #333;
+}
 </style>
 <div id="newPageContent" class="row">
     <div class="row col-sm-12 splash">
         <video autoplay muted loop poster="http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/stanford_u.jpg" id="bgvid">
             <source src="http://localhost/redcap/modules-local/redcap_home_v9.9.9/stanford_drone.mp4" type="video/mp4">
         </video>
-        <div class="col-sm-12 col-md-offset-2 col-md-5">
-            <h1>Welcome to <br>REDCap @Stanford</h1>
-            <p>Redcap Office Hours</p>
-            <a href="#" class="button">Sign-Up Here</a>
+        <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
+            <div id="home_announce"></div>
+        </div>
+
+        <div class="col-sm-12 col-md-offset-1 col-md-4 info_text">
+            <div id="info_text"></div>
         </div>
     </div>
 

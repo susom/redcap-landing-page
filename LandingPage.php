@@ -19,10 +19,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         // Trying to deal with changes in how REDCap parses the PAGE constant...
         $page = $_SERVER['REQUEST_URI'];    // e.g.  /index.php?action=help_resources
         if ($page == "index.php" || $page == "/index.php"){
-            $this->emDebug("ON Landing Page");
-            echo "<style>";
-            echo file_get_contents($this->getModulePath() . "assets/styles/mini-default.min.css");
-            echo "</style>";
+            $this->emDebug("ON Landing Page , Include NEW HTML");
             include $this->getModulePath() . "/landing_page.php";
         }
     }

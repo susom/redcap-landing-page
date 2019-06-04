@@ -1,653 +1,195 @@
+<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true) ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true) ?>' type='text/css' class='takeover'/>
 <style>
-.navbar-nav li i,
-nav.navbar .ml-auto li:last-child,
-nav.navbar .ml-auto li.loggedInUsername,
-.message-center-container,
-body > div:not(#pagecontainer){
-    display:none !important;
-}
-body,
-#pagecontent{
-    opacity:0;
-}
-</style>
-<script>
-$(document).ready( function() {
-    // first disable all the css baggage from redcap
-    $('link').prop("disabled", true);
-
-    // next pop the nav bar right out
-    $('nav.navbar').detach().insertBefore("#pagecontent").attr("id","fixed_nav");
-    $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
-    $('.nav.navbar-nav.ml-auto').unwrap();
-    $('.navbar-brand img').attr("src","http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/redcap_logo.png");
-
-    // GET THE CUSTOM HOME PAGE NOTIFICATION , MUST BE BEFORE THE #newPageContent MANIPULATIONS
-    var info_text       = $("div.round").html();
-    var home_announce   = $('#pagecontent > div:not([id])').html();
-    $('#pagecontent > div:not([id])').remove();
-
-    // do some rearranging of the furniture
-    $('#pagecontent').unwrap().addClass("container");
-    $('#pagecontent .row:first').remove();
-    $('body, #pagecontent').css("opacity",1);
-
-    $('#newPageContent').detach().appendTo($("#pagecontent"));
-    $('#footer').detach().appendTo($("#pagecontent")).addClass("row").removeClass("col-md-12");
-
-    var footer_content = $('#footer').html();
-    $('#footer').empty();
-    $("<div>").addClass("col-sm-12").html(footer_content).appendTo($("#footer"));
-
-    // READD the HOME PAGE NOTIFICATIONS & INFOTEXT
-    $("#home_announce").append(home_announce);
-    setTimeout(function(){
-        $("#home_announce").addClass("show");
-    },1500)
-    $("#info_text").append(info_text);
-
-    window.onscroll = function () {
-        if(window.scrollY > 57){
-            $("#fixed_nav").addClass("scrolling");
-        }else{
-            $("#fixed_nav").removeClass("scrolling");
-        }
-    };
-
-//OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
-});
-</script>
-<style>
-html,* {
-    font-family: "Open Sans", "Montserrat", "Helvetica Neue", Helvetica, sans-serif !important;
-}
-
-/* LETS HIJACK SOME OF THE DEFAULT Mini.css STYLES */
-
-body,
-.container{
-    margin:0;
-    padding:0;
-    color:#333;
-}
-body {
-    background:url('http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/hoover_tower.jpg') no-repeat;
-    background-attachment: fixed;
-    background-position: 31% 9%;
-}
-
-.button{
-    border-radius:5px;
-}
-/* NAV STUFF */
-#fixed_nav {
-    position:fixed;
-    margin:initial;
-    width:100%;
-    min-height:57px;
-    z-index:100;
-    padding:10px !important;
-    border:none !important;
-    background-color:transparent !important;
-}
-#fixed_nav:after{
-    content:"";
-    width:100%;
-    height:100%;
-    background: #333;
-    opacity:0;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:-1;
-    transition:opacity .4s;
-}
-#fixed_nav:hover:after{
-    opacity:.5;
-}
-#fixed_nav.scrolling{
-}
-#fixed_nav.scrolling:after{
-    background-color: #fff;
-    box-shadow:0 0 3px #333;
-    opacity:1;
-}
-
-
-.navbar-brand {
-    float:left;
-    display:inline-block;
-    padding:0 !important;
-}
-
-.navbar-brand img{
-    padding:0 !important;
-    margin:0 !important;
-}
-
-#fixed_nav a:hover{
-    background-color:initial;
-}
-#fixed_nav a{
-    font-size:77%;
-    text-transform:uppercase;
-    color:#fff !important;
-    padding:8px 10px !important;
-    opacity:.75;
-    transition: opacity .20s;
-}
-#fixed_nav a:hover{
-    opacity:1;
-}
-#fixed_nav.scrolling a{
-    color:#333 !important;
-}
-
-#fixed_nav li,
-#fixed_nav ul{
-    display:inline-block;
-    margin:0; padding:0;
-}
-#fixed_nav ul {
-    float:left;
-    margin:15px 15px 0 50px;
-}
-#fixed_nav ul.ml-auto{
-    float:right;
-    margin:15px 30px 0 0;
-}
-#fixed_nav li {
-    margin-left:10px;
-}
-#fixed_nav li b,
-#fixed_nav li span{
-    padding:0 3px !important;
-    margin:0 3px !important;
-    text-transform:capitalize;
-}
-#fixed_nav li i {
-    display:none;
-}
-
-/* FOOTER STUFF*/
-#footer{
-    color:#777;
-    background-color:#212121;
-    text-align:center;
-    padding:15px 0;
-}
-#footer a:link{
-    color:#777;
-}
-
-/*page sections*/
-#newPageContent > .row:not(.splash){
-    background:#fff;
-    min-height:20vh;
-    padding:40px 0;
-}
-#newPageContent h2{
-    text-align:Center;
-    margin-bottom:40px;
-    text-transform:uppercase;
-}
-
-#bgvid {
-    position: absolute;
-    left: 0; top: 0;
-    min-width: 100%; min-height: 100%;
-    width: auto; height: auto;
-    z-index: -100;
-    background: url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/stanford_u.jpg) no-repeat;
-    background-size: cover;
-}
-/*#newPageContent .splash:before{
-    content:"";
-    width:2000px;
-    height:2000px;
-    background: #333;
-    opacity:.5;
-    position:absolute;
-    top:0;
-    left:0;
-    z-index:-99;
-}*/
-#newPageContent .splash {
-    min-height:670px;
-    position: relative;
-    background:transparent;
-    overflow:hidden;
-    text-transform: uppercase;
-}
-
-
-.about p{
-    padding:20px;
-}
-
-.team fig{
-    display:block;
-    margin:0 0 40px;
-    width:100%; height:25vh;
-    text-align: center;
-    cursor:pointer;
-    position:relative;
-}
-.team fig > div{
-    position:absolute;
-    top:0; left:0;
-    width:calc(100% - 40px);
-    min-height:calc(20vh - 40px);
-    text-align:left;
-    opacity:0;
-    padding:20px 20px;
-    transition: opacity .4s;
-    z-index:0;
-    font-size:85%
-}
-.team fig:hover > div {
-    opacity:1;
-    color:#fff;
-}
-.team fig:hover > div:after {
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    margin:0 auto;
-    top:0%; left:0;
-    background:#333;
-    opacity:.8;
-    z-index:-1;
-    border-radius:5px;
-}
-.team figure{
-    display:block;
-    width:100%;
-    height:100%;
-    max-width:20vh;
-    max-height:20vh;
-    margin:0 auto;
-    border-radius:5px;
-s}
-.team figcaption{
-    margin-top:5px;
-    font-size:120%;
-}
-.team figcaption b{
-    display:block;
-}
-.team .andy_martin figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1558658034.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .alvaro_alvarez figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1308928044.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .jae_lee figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_2.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .jordan_schultz figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_10.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .irvin_szeto figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_368513347.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .ryan_valentine figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_6247144.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-.team .leeann_yasukawa figure{
-    background:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_13.img.full.high.jpg') 50% no-repeat;
-    background-size:contain;
-}
-
-
-#newPageContent .row.training {
-    background-color:transparent;
-    position:relative;
-    z-index:0;
-}
-#newPageContent .row.training h2{
-    color:#ccc;
-}
-#newPageContent .row.training:after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0; left:0;
-    background:#000;
-    opacity:.65;
-    z-index:-1;
-}
-#newPageContent .row.features{
-    background-color:#f8f8f8;
-}
-#newPageContent .row.stats{
-    background-color:#3f474f;
-}
-#newPageContent .row.contact {
-    background-color:#000;
-}
-
-#newPageContent .row.features{
-    min-height:50vh;
-}
-.stats h2,
-.contact h2{
-    color:#ececec;
-}
-
-.stats div  {
-    text-align:center;
-}
-.stats h3,
-.stats span{
-    display:block;
-    text-align:center;
-    color:#ececec;
-    font-size:300%;
-}
-.stats h3{
-    margin:0; padding:0;
-    font-size:100%;
-}
-
-
-#newPageContent .training .row {
-    padding:0;
-    background-color:transparent;
-}
-.resources{
-    width:auto;
-    height:20vh;
-    max-height:25vh;
-    max-width:25vh;
-    margin:10px;
-    background:#efefef;
-    border:1px solid #ccc;
-    border-radius:5px;
-    position:relative;
-    cursor:pointer;
-    text-align:center;
-}
-.resources a {
-    opacity:0;
-    text-decoration: none;
-}
-.resources:hover a{
-    position:absolute;
-    top:0;
-    left:0;
-    width:auto;
-    height:20vh;
-    max-height:25vh;
-    max-width:25vh;
-
-    opacity:1;
-    transition:opacity .4s;
-    z-index:0;
-
-    padding:15px;
-    color:#fff;
-    text-align:left;
-}
-.resources:hover a:after{
-    content:"";
-    position:absolute;
-    top:0; left:0;
-    width:100%;
-    height:calc(100% - 30px);
-    background:#333;
-    opacity:.8;
-    border-radius:5px;
-    z-index:-1;
-}
-
-h3.icon{
-    position: relative;
-    margin-top: 50%;
-    padding-top: 35%;
-    top: -35%;
-}
-.icon.wiki{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_wiki.png) 50% 30% no-repeat;
-    background-size:30%;
-}
-.icon.faq{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_faq.png) 50% 10% no-repeat;
-    background-size:30%;
-}
-.icon.videos{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_videos.png) 50% 30% no-repeat;
-    background-size:30%;
-}
-.icon.hours{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_hours.png) 50% 20% no-repeat;
-    background-size:30%;
-}
-.icon.training{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_training.png) 50% 30% no-repeat;
-    background-size:30%;
-}
-.icon.email{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_email.png) 50% 40% no-repeat;
-    background-size:30%;
-}
-.icon.pro_services{
-    background:url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_pro_services.png) 50% -30% no-repeat;
-    background-size:25%;
-}
-
-#newPageContent .contact h2{
-    color:#333;
-    text-align:left;
-    margin-bottom:20px;
-}
-#newPageContent .row.contact{
-    padding:0;
-}
-.contact .inputform{
-    background:#fff;
-    padding:80px 40px;
-}
-.contact form{
-    margin:0 auto;
-    background:none;
-    border:none;
-}
-.contact form p{
-    margin-bottom:20px;
-}
-.contact form .input-group{
-    margin-bottom:20px;
-}
-.contact form label{
-    margin-bottom:3px;
-}
-.contact form input,
-.contact form textarea{
-    padding:5px 10px;
-    border-radius:5px;
-}
-.contact form textarea{
-    min-height:10vh;
-}
-.contact form button{
-    padding:5px 10px;
-    border-radius:5px;
-    float:right;
-}
-
-.features .bullet div p,
-.features .bullet div h5{
-    font-size:80% !important;
-}
-.features .bullet div{
-    background:#ececec;
-    margin:0 20px 20px 10px;
-    padding:20px;
-    padding-left:120px;
-    text-align:left;
-    position:relative;
-    border-radius:100px 5px 5px 100px;
-    min-height: calc(106px - 40px);
-}
-.features .bullet:nth-of-type(odd) div{
-    padding-left:20px;
-    padding-right:120px;
-    margin-right:10px;
-    margin-left:20px;
-    border-radius:5px 100px 100px 5px;
-}
-
-.features .bullet div:after{
-    content:"";
-    position:absolute;
-    top:0; left:0;
-    width:100px;
-    height:100px;
-    border:3px solid #1B5E54;
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_faq.png) 50% no-repeat;
-    background-size:55%;
-    border-radius:100px;
-}
-.features .bullet:nth-of-type(odd) div:after{
-    right:0;
-    left:initial;
-    border:3px solid #E8AA27;
-}
-.features .bullet div.build_surveys:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_survey.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.speed:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_speed.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.export_data:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_export.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.reporting:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_data.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.econsent:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_econsent.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.contact_list:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_contacts.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.scheduling:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_scheduling.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.mobile:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_mobile.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.send_files:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_send_files.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.save_pdf:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_printer.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.advanced:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_advanced.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.api:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_api.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.data_queries:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_faq.png) 50% no-repeat;
-    background-size:55%;
-}
-.features .bullet div.piping:after{
-    background:#fff url(http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/icon_piping.png) 50% no-repeat;
-    background-size:20%;
-}
-
-.splash{
-    color:#fff;
-}
-
-.home_announce{
-    position:relative;
-}
-#home_announce{
-    position:absolute;
-    top:35%;
-    left:-800px;
-    transition:left 4s;
-}
-#home_announce.show{
-    left:0;
-}
-.splash a.button{
-    padding-left: 30px;
-    padding-right:30px;
-    border-radius:5px;
-    padding:5px 10px;
-}
-.home_announce{
-    position:relative;
-}
-.info_text{
-    position:relative;
-    text-transform:initial;
-}
-#info_text{
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-#info_text .info_alert{
-    font-size: 85%;
-    position: relative;
-    margin-bottom:10px;
-    padding-bottom:20px;
-}
-.info_alert:after{
-    content:"";
-    width:100%;
-    height:100%;
-    position:absolute;
-    top:0; left:0;
-    border-radius:5px;
-    background:#fff;
-    opacity:.65;
-    box-shadow:0px 0px 3px #333;
-    z-index:-1;
-}
-.info_alert h4{
-    text-align:center;
-    padding:5px 0;
-    border-radius:5px 5px 0 0;
-    background:#C41E3A;
-}
-.info_alert p{
-    font-size:85%;
-    margin:10px 10px 0;
-    text-shadow:1px 1px 1px #333;
-}
+    body {
+        background-image:url('<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>');
+        background-repeat: no-repeat;
+    }
+    #bgvid {
+        background-image: url(<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>);
+        background-repeat: no-repeat;
+    }
+    .team .andy_martin figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1558658034.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .alvaro_alvarez figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1308928044.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .jae_lee figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_2.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .jordan_schultz figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_10.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .irvin_szeto figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_368513347.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .ryan_valentine figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_6247144.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .team .leeann_yasukawa figure{
+        background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_13.img.full.high.jpg');
+        background-position:50%;
+        background-repeat: no-repeat;
+    }
+    .icon.wiki{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_wiki.png", true) ?>);
+        background-position:50% 30%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.faq{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_faq.png", true) ?>);
+        background-position:50% 10%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.videos{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_videos.png", true) ?>) ;
+        background-position:50% 30%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.hours{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_hours.png", true) ?>) ;
+        background-position:50% 20%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.training{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_training.png", true) ?>) ;
+        background-position:50% 30%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.email{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_email.png", true) ?>) ;
+        background-position:50% 40%;
+        background-repeat: no-repeat;
+        background-size:30%;
+    }
+    .icon.pro_services{
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_pro_services.png", true) ?>) ;
+        background-position:50% 30%;
+        background-repeat: no-repeat;
+        background-size:25%;
+    }
+    .features .bullet div.build_surveys:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_survey.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.speed:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_speed.png", true) ?>);
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.export_data:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_export.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.reporting:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_data.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.econsent:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_econsent.png", true) ?>);
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.contact_list:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_contacts.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.scheduling:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_scheduling.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.mobile:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_mobile.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.send_files:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_send_files.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.save_pdf:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_printer.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.advanced:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_advanced.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.api:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_api.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.data_queries:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_faq.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:55%;
+    }
+    .features .bullet div.piping:after{
+        background-color:#fff;
+        background-image:url(<?php echo $this->getUrl("/assets/images/icon_piping.png", true) ?>) ;
+        background-position:50%;
+        background-repeat: no-repeat;
+        background-size:20%;
+    }
 </style>
 <div id="newPageContent" class="row">
+
     <div class="row col-sm-12 splash">
-        <video autoplay muted loop poster="http://localhost/redcap/modules-local/redcap_home_v9.9.9/assets/images/stanford_u.jpg" id="bgvid">
-            <source src="http://localhost/redcap/modules-local/redcap_home_v9.9.9/stanford_drone.mp4" type="video/mp4">
+        <video autoplay muted loop poster="<?php echo $this->getUrl("/assets/images/stanford_u.jpg", true) ?>" id="bgvid">
+            <source src="<?php echo $this->getUrl("/stanford_drone.mp4", true) ?>" type="video/mp4">
         </video>
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
             <div id="home_announce"></div>
@@ -657,6 +199,27 @@ h3.icon{
             <div id="info_text"></div>
         </div>
     </div>
+    <!-- <div id="notif" class="slide right">
+        <h3>Some Messaging</h3>
+        <p>Lets just do the aniation stuff</p>
+    </div> -->
+
+    <!-- <div class="row col-sm-12 notifs">
+        <h2 class="col-sm-12">Notifs</h2>
+        <div class="col-sm-12">
+            <span class="toast">This is a toast message!</span>
+
+            <label for="modal-control">Show modal</label>
+            <input type="checkbox" id="modal-control" class="modal">
+            <div>
+              <div class="card">
+                <label for="modal-control" class="modal-close" ></label>
+                <h3 class="section">Modal</h3>
+                <p class="section">This is a modal dialog!</p>
+              </div>
+            </div>
+        </div>
+    </div> -->
 
     <div class="row col-sm-12 about">
         <h2 class="col-sm-12">About REDCap</h2>
@@ -779,6 +342,52 @@ h3.icon{
         </div>
     </div>
 
+    <div class="row col-sm-12 training">
+        <h2 class="col-sm-12">Training & Resources</h2>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon wiki">Wiki</h3>
+                <a href="https://medwiki.stanford.edu/display/redcap" target="blank">You will find here Tutorials, Videos, answers to the most common questions and also instructions to use a list of custom Add-ins built at Stanford you can use in your project.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon faq">The Application FAQ</h3>
+                <a href="https://redcap.stanford.edu/index.php?action=help">Supplied by the developers of REDCap, it contains detailed information on many of REDCap's features.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon videos">Training Videos</h3>
+                <a href="https://redcap.stanford.edu/index.php?action=training">Explore these overviews of fundamental concepts and features.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon hours">Office Hours</h3>
+                <a href="https://medwiki.stanford.edu/x/vIjZB">If you have a question or require some hands-on help with REDCap, we will do our best to assist. In-person or On-line.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon training">In-Person Training</h3>
+                <a href="https://medwiki.stanford.edu/x/75U0Bw">We offer a free 3-hour Introductory REDCap class once a month. please find here the current calendar.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon email">Email Support</h3>
+                <a href="https://redcap.stanford.edu/plugins/gethelp/">We are happy to answer specific questions by emailing redcap-help@lists.stanford.edu. or by filling a consultation request.</a>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="resources ">
+                <h3 class="icon pro_services">Professional Services</h3>
+                <a href="https://medwiki.stanford.edu/x/qafZB">Services beyond the basics, a trained REDCap software engineer can assist in the many aspects of data collection and research.</a>
+            </div>
+        </div>
+    </div>
+    
     <div class="row col-sm-12 team">
         <h2 class="col-sm-12">REDCap Team</h2>
         <div class="col-sm-12 col-md-3">
@@ -833,54 +442,6 @@ h3.icon{
         <div class="col-sm-12 col-md-3"></div>
     </div>
 
-    <div class="row col-sm-12 training">
-        <h2 class="col-sm-12">Training & Resources</h2>
-        <div class="col-sm-10 col-sm-offset-1 row">
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon wiki">Wiki</h3>
-                    <a href="https://medwiki.stanford.edu/display/redcap" target="blank">You will find here Tutorials, Videos, answers to the most common questions and also instructions to use a list of custom Add-ins built at Stanford you can use in your project.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon faq">The Application FAQ</h3>
-                    <a href="https://redcap.stanford.edu/index.php?action=help">Supplied by the developers of REDCap, it contains detailed information on many of REDCap's features.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon videos">Training Videos</h3>
-                    <a href="https://redcap.stanford.edu/index.php?action=training">Explore these overviews of fundamental concepts and features.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon hours">Office Hours</h3>
-                    <a href="https://medwiki.stanford.edu/x/vIjZB">If you have a question or require some hands-on help with REDCap, we will do our best to assist. In-person or On-line.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon training">In-Person Training</h3>
-                    <a href="https://medwiki.stanford.edu/x/75U0Bw">We offer a free 3-hour Introductory REDCap class once a month. please find here the current calendar.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon email">Email Support</h3>
-                    <a href="https://redcap.stanford.edu/plugins/gethelp/">We are happy to answer specific questions by emailing redcap-help@lists.stanford.edu. or by filling a consultation request.</a>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-3">
-                <div class="resources ">
-                    <h3 class="icon pro_services">Professional Services</h3>
-                    <a href="https://medwiki.stanford.edu/x/qafZB">Services beyond the basics, a trained REDCap software engineer can assist in the many aspects of data collection and research.</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row col-sm-12 contact">
         <div class="col-sm-12 col-md-6 map row">
             <div class="mapouter">
@@ -916,4 +477,50 @@ h3.icon{
         </div>
     </div>
 </div>
+<script>
+$(document).ready( function() {
+    // first disable all the css baggage from redcap
+    $('link:not(.takeover)').prop("disabled", true);
+
+    // next pop the nav bar right out
+    $('nav.navbar').detach().insertBefore("#pagecontent").attr("id","fixed_nav");
+    $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
+    $('.nav.navbar-nav.ml-auto').unwrap();
+    $('.navbar-brand img').attr("src","<?php echo $this->getUrl("/assets/images/redcap_logo.png", true) ?>");
+
+    // GET THE CUSTOM HOME PAGE NOTIFICATION , MUST BE BEFORE THE #newPageContent MANIPULATIONS
+    var info_text       = $("div.round").html();
+    var home_announce   = $('#pagecontent > div:not([id])').html();
+    $('#pagecontent > div:not([id])').remove();
+
+    // do some rearranging of the furniture
+    $('#pagecontent').unwrap().addClass("container");
+    $('#pagecontent .row:first').remove();
+    $('body, #pagecontent').css("opacity",1);
+
+    $('#newPageContent').detach().appendTo($("#pagecontent"));
+    $('#footer').detach().appendTo($("#pagecontent")).addClass("row").removeClass("col-md-12");
+
+    var footer_content = $('#footer').html();
+    $('#footer').empty();
+    $("<div>").addClass("col-sm-12").html(footer_content).appendTo($("#footer"));
+
+    // READD the HOME PAGE NOTIFICATIONS & INFOTEXT
+    $("#home_announce").append(home_announce);
+    setTimeout(function(){
+        $("#home_announce").addClass("show");
+    },1500)
+    $("#info_text").append(info_text);
+
+    window.onscroll = function () {
+        if(window.scrollY > 57){
+            $("#fixed_nav").addClass("scrolling");
+        }else{
+            $("#fixed_nav").removeClass("scrolling");
+        }
+    };
+
+//OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
+});
+</script>
 

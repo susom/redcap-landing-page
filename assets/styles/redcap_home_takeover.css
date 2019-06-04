@@ -7,7 +7,7 @@ body > div:not(#pagecontainer){
 }
 body,
 #pagecontent{
-    opacity:0;
+    opacity:1;
 }
 
 html,* {

@@ -1,5 +1,59 @@
+<?php
+
+$objHtmlPage = new HtmlPage();
+$objHtmlPage->addExternalJS(APP_PATH_JS . "base.js");
+$objHtmlPage->addStylesheet("jquery-ui.min.css", 'screen,print');
+$objHtmlPage->addStylesheet("style.css", 'screen,print');
+$objHtmlPage->addStylesheet("home.css", 'screen,print');
+$objHtmlPage->PrintHeader();
+
+
+// // Display tabs (except if viewing FAQ in a new window)
+// $onHelpPageInNewWindow = (isset($_GET['action']) && $_GET['action'] == 'help' && isset($_GET['newwin']));
+// if (!$onHelpPageInNewWindow) {
+include APP_PATH_VIEWS . 'HomeTabs.php';
+// }
+
+
+// Initialize vars as global since this file might get included inside a function
+global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text, $sendit_enabled, $edoc_field_option_enabled, $api_enabled;
+
+
+
+//If system is offline, give message to super users that system is currently offline
+global $system_offline, $super_user;
+if ($system_offline && $super_user)
+{
+	print  "<div class='red mb-3'>
+				{$lang['home_01']}
+				<a href='".APP_PATH_WEBROOT."ControlCenter/general_settings.php'
+					style='text-decoration:underline;'>{$lang['global_07']}</a>.
+			</div>";
+}
+
+
+
+
+// $username = isset($_GET['username']) ? $_GET['username'] : '';
+// if($username)
+// {
+// 	$user = User::getUserInfo($username);
+// 	$folder_ids = isset($_GET['folder_ids']) ? explode(',', $_GET['folder_ids']) : array();
+// }
+// else
+// {
+// 	$user = User::getUserInfo(USERID);
+// 	$folder_ids = array();
+// }
+//
+// $this->emDebug("Username: $username");
+
+
+?>
+// INSERTING CSS
 <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true) ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true) ?>' type='text/css' class='takeover'/>
+
 <style>
     body {
         background-image:url('<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>');
@@ -524,3 +578,6 @@ $(document).ready( function() {
 });
 </script>
 
+<?php
+
+$objHtmlPage->PrintFooter();

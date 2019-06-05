@@ -50,10 +50,8 @@ if ($system_offline && $super_user)
 
 
 ?>
-// INSERTING CSS
 <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true) ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true) ?>' type='text/css' class='takeover'/>
-
 <style>
     body {
         background-image:url('<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>');
@@ -246,11 +244,24 @@ if ($system_offline && $super_user)
             <source src="<?php echo $this->getUrl("/stanford_drone.mp4", true) ?>" type="video/mp4">
         </video>
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
-            <div id="home_announce"></div>
+            <div id="home_announce">
+                <?php 
+                if (trim($homepage_announcement) != "" && isset($_SESSION['username'])) {
+                    print(nl2br(decode_filter_tags($homepage_announcement)));
+                }
+                ?>
+            </div>
         </div>
 
         <div class="col-sm-12 col-md-offset-1 col-md-4 info_text">
-            <div id="info_text"></div>
+            <div id="info_text">
+                <?php 
+                if (trim($homepage_custom_text) != "") {
+                    $homepage_custom_text = nl2br(decode_filter_tags($homepage_custom_text));
+                    print($homepage_custom_text);
+                }
+                ?>
+            </div>
         </div>
     </div>
     <!-- <div id="notif" class="slide right">
@@ -276,106 +287,118 @@ if ($system_offline && $super_user)
     </div> -->
 
     <div class="row col-sm-12 about">
-        <h2 class="col-sm-12">About REDCap</h2>
+        <h2 class="col-sm-12"><?php echo $lang['info_01'] ?></h2>
         <div class="col-sm-12 col-md-3">
-            <p>REDCap is a secure web platform for building and managing online databases and surveys. REDCap's streamlined process for rapidly creating and designing projects offers a vast array of tools that can be tailored to virtually any data collection strategy.</p>
+            <p><?php echo $lang['info_44'] ?></p>
         </div>
         <div class="col-sm-12 col-md-3">
-            <p>REDCap provides automated export procedures for seamless data downloads to Excel and common statistical packages (SPSS, SAS, Stata, R), as well as a built-in project calendar, a scheduling module, ad hoc reporting tools, and advanced features, such as branching logic, file uploading, and calculated fields.</p>
+            <p><?php echo $lang['info_35'] ?></p>
         </div>
         <div class="col-sm-12 col-md-3">
-            <p>Learn more about REDCap by watching a   brief summary video (4 min). If you would like to view other quick video tutorials of REDCap in action and an overview of its features, please see the Training Resources page.</p>
+            <p><?php 
+                echo $lang['info_36'];
+                echo " <img src='".APP_PATH_IMAGES."video_small.png'> <a href='javascript:;' onclick=\"popupvid('redcap_overview_brief02','Brief Overview of REDCap')\" style='text-decoration:underline;'>{$lang['info_37']}</a>{$lang['period']} " ;
+                echo $lang['info_38'];
+                echo " <a href='index.php?action=training' style='text-decoration:underline;'>{$lang['info_06']}</a> ";
+                echo $lang['global_14']. $lang['period'];
+                ?>
+            </p>
         </div>
         <div class="col-sm-12 col-md-3">
-            <p>NOTICE: If you are collecting data for the purposes of human subjects research, review and approval of the project is required by your Institutional Review Board.
-            <br/>If you require assistance or have any questions about REDCap, please contact redcap-help@lists.stanford.edu.</p>
+            <?php 
+                if (trim($homepage_grant_cite) != "") {
+                    echo "<p>".$lang['info_08'] . "<b>$homepage_grant_cite</b>).</p>";
+                }
+                echo "<p style='color:#C00000;'><i>".$lang['global_03'].$lang['colon']."</i> ".$lang['info_10']."</p>";
+                echo "<p>" . $lang['info_11'] . " <a style='text-decoration:underline;' href='". (trim($homepage_contact_url) == '' ? "mailto:$homepage_contact_email" : trim($homepage_contact_url)) ."'>$homepage_contact</a>". $lang['period'] . "</p>";
+            ?>
         </div>
     </div>
 
     <div class="row col-sm-12 features">
-        <h2 class="col-sm-12">REDCap Features</h2>
+        <h2 class="col-sm-12"><?php echo $lang['info_12'] ?></h2>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="build_surveys">
-                <h5>Build online surveys and databases quickly and securely</h5>
-                <p>Create and design your project rapidly using secure web authentication from your browser. No extra software is required.</p>
+                <h5><?php echo $lang['info_13'] ?></h5>
+                <p><?php echo $lang['info_14'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="speed">
-                <h5>Fast and flexible</h5>
-                <p>Conception to production-level survey/database in less than one day.</p>
+                <h5><?php echo $lang['info_15'] ?></h5>
+                <p><?php echo $lang['info_16'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="export_data">
-                <h5>Export data to common data analysis packages</h5>
-                <p>Export your data to Microsoft Excel, PDF, SAS, Stata, R, or SPSS for analysis.</p>
+                <h5><?php echo $lang['info_19'] ?></h5>
+                <p><?php echo $lang['info_20'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="reporting">
-                <h5>Ad Hoc Reporting</h5>
-                <p>Create custom queries for generating reports to view or download.</p>
+                <h5><?php echo $lang['info_23'] ?></h5>
+                <p><?php echo $lang['info_24'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="econsent">
-                <h5>e-Consent</h5>
-                <p>Perform informed consent electronically for participants via survey.</p>
+                <h5><?php echo $lang['info_45'] ?></h5>
+                <p><?php echo $lang['info_46'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="contact_list">
-                <h5>Easily manage a contact list of survey respondents or create a simple survey link</h5>
-                <p>Build a list of email contacts, create custom email invitations, and track who responds, or you may also create a single survey link to email out or post on a website.</p>
+                <h5><?php echo $lang['info_32'] ?></h5>
+                <p><?php echo $lang['info_33'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="scheduling">
-                <h5>Scheduling</h5>
-                <p>Utilize a built-in project calendar and scheduling module for organizing your events and appointments.</p>
+                <h5><?php echo $lang['global_25'] ?></h5>
+                <p><?php echo $lang['info_18'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="mobile">
-                <h5>REDCap Mobile App</h5>
-                <p>Collect data offline using an app on a mobile device when there is no WiFi or cellular connection, and then later sync data back to the server.</p>
+                <h5><?php echo $lang['global_118'] ?></h5>
+                <p><?php echo $lang['info_43'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="send_files">
-                <h5>Send files to others securely</h5>
-                <p>Using 'Send-It', upload and send files to multiple recipients, including existing project documents, that are too large for email attachments or that contain sensitive data.</p>
+                <h5><?php echo $lang['info_21'] ?></h5>
+                <p><?php echo $lang['info_22'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="save_pdf">
-                <h5>Save your data collection instruments as a PDF to print</h5>
-                <p>Generate a PDF version of your forms and surveys for printing to collect data offline.</p>
+                <h5><?php echo $lang['info_25'] ?></h5>
+                <p><?php echo $lang['info_26'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="advanced">
-                <h5>Advanced features</h5>
-                <p>Auto-validation, calculated fields, file uploading, branching/skip logic, and survey stop actions.</p>
+                <h5><?php echo $lang['info_13'] ?></h5>
+                <p><?php echo $lang['info_13'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="api">
                 <h5>REDCap API</h5>
-                <p>Have external applications connect to REDCap remotely in a programmatic or automated fashion.</p>
+                <p><?php echo $lang['info_31'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="data_queries">
-                <h5>Data Queries</h5>
-                <p>Document the process of resolving data issues using the Data Resolution Workflow module.</p>
+                <h5><?php echo $lang['info_39'] ?></h5>
+                <p><?php echo $lang['info_40'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="piping">
-                <h5>Piping</h5>
-                <p>Inject previously collected data values into question labels, survey invitation emails, etc. to provide a more customized experience.</p>
+                <h5><?php echo $lang['info_41'] ?></h5>
+                <p><?php echo $lang['info_42'] ?></p>
             </div>
         </div>
     </div>
@@ -542,30 +565,12 @@ $(document).ready( function() {
     $('.nav.navbar-nav.ml-auto').unwrap();
     $('.navbar-brand img').attr("src","<?php echo $this->getUrl("/assets/images/redcap_logo.png", true) ?>");
 
-    // GET THE CUSTOM HOME PAGE NOTIFICATION , MUST BE BEFORE THE #newPageContent MANIPULATIONS
-    var info_text       = $("div.round").html();
-    var home_announce   = $('#pagecontent > div:not([id])').html();
-    $('#pagecontent > div:not([id])').remove();
-
-    // do some rearranging of the furniture
-    $('#pagecontent').unwrap().addClass("container");
-    $('#pagecontent .row:first').remove();
-    $('body, #pagecontent').css("opacity",1);
-
-    $('#newPageContent').detach().appendTo($("#pagecontent"));
-    $('#footer').detach().appendTo($("#pagecontent")).addClass("row").removeClass("col-md-12");
-
-    var footer_content = $('#footer').html();
-    $('#footer').empty();
-    $("<div>").addClass("col-sm-12").html(footer_content).appendTo($("#footer"));
-
-    // READD the HOME PAGE NOTIFICATIONS & INFOTEXT
-    $("#home_announce").append(home_announce);
+    //put a timer on the home page announce
     setTimeout(function(){
         $("#home_announce").addClass("show");
     },1500)
-    $("#info_text").append(info_text);
 
+    //monitor the scroll of the page for potential interactions
     window.onscroll = function () {
         if(window.scrollY > 57){
             $("#fixed_nav").addClass("scrolling");
@@ -577,7 +582,5 @@ $(document).ready( function() {
 //OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 });
 </script>
-
 <?php
-
 $objHtmlPage->PrintFooter();

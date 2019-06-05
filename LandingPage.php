@@ -18,9 +18,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // Lets take over this page and prevent other code from executing
              $this->emDebug("Run Landing Page - " . PAGE);
 
-
             $authenticatedHomeUrl = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/home/index.php";
-
 
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
@@ -50,10 +48,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
             $this->emDebug("Loading Custom Landing Page");
             include $this->getModulePath() . "/landing_page.php";
-
             $this->exitAfterHook();
-
-
 
             // Is user authenticated
             if (defined("USERID")) {

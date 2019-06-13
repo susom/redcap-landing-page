@@ -48,6 +48,36 @@
 
 	"system-settings": [
 		{
+			"key": "background-image-url",
+			"name": "<b>Background Image URL</b><br>This image should be large and high-res and must be public",
+			"required": false,
+			"type": "text"
+		},
+		{
+			"key": "background-video-url",
+			"name": "<b>Background Video URL</b><br>mp4 video to render on homepage - must be public",
+			"required": false,
+			"type": "text"
+		},
+		{
+			"key": "citation-info",
+			"name": "<b>Citation Details</b>",
+			"required": false,
+			"type": "rich-text"
+		},
+		{
+			"key": "home-announce",
+			"name": "<b>Home Announce</b><br>Check to override the default home-announce text on the left side of the homepage",
+			"required": false,
+			"type": "checkbox"
+		},
+		{
+			"key": "home-announce-override",
+			"name": "<b>Custom Home Announce</b>",
+			"required": false,
+			"type": "rich-text"
+		},
+		{
 			"key": "enable-system-debug-logging",
 			"name": "<b>Enable Debug Logging (system-wide)</b><i>(Requires emLogger)</i>",
 			"required": false,

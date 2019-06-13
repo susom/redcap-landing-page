@@ -1,5 +1,30 @@
 <?php
 
+global $shibboleth_username_field, $auth_meth;
+
+// Is user authenticated?  Because we are doing noauth on index page, we need to manually do this:
+if ($auth_meth == "shibboleth") {
+    if (!empty($shibboleth_username_field)) {
+        // Custom username field
+        $userid = $_SESSION['username'] = strtolower($_SERVER[$shibboleth_username_field]);
+    } else {
+        // Default value
+        $userid = $_SESSION['username'] = strtolower($_SERVER['REMOTE_USER']);
+    }
+    defined("USERID") or define("USERID", strtolower($userid));
+}
+
+
+if (defined("USERID")) {
+    // Authenticated
+    $this->emDebug("Authenticated");
+} else {
+    // Not Authenticated
+    $this->emDebug("Not authenticated");
+}
+
+
+
 $objHtmlPage = new HtmlPage();
 $objHtmlPage->addExternalJS(APP_PATH_JS . "base.js");
 $objHtmlPage->addStylesheet("jquery-ui.min.css", 'screen,print');
@@ -17,19 +42,7 @@ include APP_PATH_VIEWS . 'HomeTabs.php';
 
 // Initialize vars as global since this file might get included inside a function
 global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text, $sendit_enabled, $edoc_field_option_enabled, $api_enabled;
-
-
-
-//If system is offline, give message to super users that system is currently offline
-global $system_offline, $super_user;
-if ($system_offline && $super_user)
-{
-	print  "<div class='red mb-3'>
-				{$lang['home_01']}
-				<a href='".APP_PATH_WEBROOT."ControlCenter/general_settings.php'
-					style='text-decoration:underline;'>{$lang['global_07']}</a>.
-			</div>";
-}
+global $homepage_contact, $homepage_contact_url, $homepage_contact_email;
 
 
 
@@ -49,18 +62,25 @@ if ($system_offline && $super_user)
 // $this->emDebug("Username: $username");
 
 
+$body_background_url = $this->getSystemSetting("background-image-url");
+if (empty($body_background_url)) $body_background_url = $this->getUrl("/assets/images/stanford_quad.jpg", true, true);
+
+$background_video_url = $this->getSystemSetting("background-video-url");
+if (empty($background_video_url)) $background_video_url = $this->getUrl("/assets/images/stanford_quad.jpg", true, true);
+
+
 ?>
-<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true) ?>' type='text/css' class='takeover'/>
-<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true) ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true, true) ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true, true) ?>' type='text/css' class='takeover'/>
 <style>
     body {
-        background-image:url('<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>');
+        background-image:url('<?php echo $body_background_url ?>');
         background-repeat: no-repeat;
     }
-    #bgvid {
-        background-image: url(<?php echo $this->getUrl("/assets/images/stanford_quad.jpg", true) ?>);
-        background-repeat: no-repeat;
-    }
+    /*#bgvid {*/
+    /*    background-image: url(*/<?php //echo $this->getUrl("/assets/images/stanford_quad.jpg", true, true) ?>/*);*/
+    /*    background-repeat: no-repeat;*/
+    /*}*/
     .team .andy_martin figure{
         background-image:url('http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1558658034.img.full.high.jpg');
         background-position:50%;
@@ -240,8 +260,8 @@ if ($system_offline && $super_user)
 <div id="newPageContent" class="row">
 
     <div class="row col-sm-12 splash">
-        <video autoplay muted loop poster="<?php echo $this->getUrl("/assets/images/stanford_u.jpg", true) ?>" id="bgvid">
-            <source src="<?php echo $this->getUrl("/stanford_drone.mp4", true) ?>" type="video/mp4">
+        <video autoplay muted loop id="bgvid">
+            <source src="<?php echo $background_video_url ?>" type="video/mp4">
         </video>
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
             <div id="home_announce">
@@ -286,32 +306,20 @@ if ($system_offline && $super_user)
         </div>
     </div> -->
 
-    <div class="row col-sm-12 about">
-        <h2 class="col-sm-12"><?php echo $lang['info_01'] ?></h2>
+
+    <div class="row col-sm-12 stats">
+        <h2 class="col-sm-12">REDCap Stats</h2>
         <div class="col-sm-12 col-md-3">
-            <p><?php echo $lang['info_44'] ?></p>
+            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
         </div>
         <div class="col-sm-12 col-md-3">
-            <p><?php echo $lang['info_35'] ?></p>
+            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
         </div>
         <div class="col-sm-12 col-md-3">
-            <p><?php 
-                echo $lang['info_36'];
-                echo " <img src='".APP_PATH_IMAGES."video_small.png'> <a href='javascript:;' onclick=\"popupvid('redcap_overview_brief02','Brief Overview of REDCap')\" style='text-decoration:underline;'>{$lang['info_37']}</a>{$lang['period']} " ;
-                echo $lang['info_38'];
-                echo " <a href='index.php?action=training' style='text-decoration:underline;'>{$lang['info_06']}</a> ";
-                echo $lang['global_14']. $lang['period'];
-                ?>
-            </p>
+            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
         </div>
         <div class="col-sm-12 col-md-3">
-            <?php 
-                if (trim($homepage_grant_cite) != "") {
-                    echo "<p>".$lang['info_08'] . "<b>$homepage_grant_cite</b>).</p>";
-                }
-                echo "<p style='color:#C00000;'><i>".$lang['global_03'].$lang['colon']."</i> ".$lang['info_10']."</p>";
-                echo "<p>" . $lang['info_11'] . " <a style='text-decoration:underline;' href='". (trim($homepage_contact_url) == '' ? "mailto:$homepage_contact_email" : trim($homepage_contact_url)) ."'>$homepage_contact</a>". $lang['period'] . "</p>";
-            ?>
+            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -403,21 +411,6 @@ if ($system_offline && $super_user)
         </div>
     </div>
 
-    <div class="row col-sm-12 stats">
-        <h2 class="col-sm-12">REDCap Stats</h2>
-        <div class="col-sm-12 col-md-3">
-            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
-        </div>
-        <div class="col-sm-12 col-md-3">
-            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
-        </div>
-        <div class="col-sm-12 col-md-3">
-            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
-        </div>
-        <div class="col-sm-12 col-md-3">
-            <iframe allowtransparency="true" width="150" height="100" src="https://datastudio.google.com/embed/reporting/17evFt8UqrGNAmLlB4i5PScKrAXDiPWDb/page/TDxq" frameborder="0" style="border:0; border-radius:5px" allowfullscreen></iframe>
-        </div>
-    </div>
 
     <div class="row col-sm-12 training">
         <h2 class="col-sm-12">Training & Resources</h2>
@@ -518,6 +511,54 @@ if ($system_offline && $super_user)
         </div>
         <div class="col-sm-12 col-md-3"></div>
     </div>
+
+
+    <div class="row col-sm-12 about">
+        <h2 class="col-sm-12">About REDCap</h2>
+        <div class="col-sm-12 col-md-4">
+            <p><?php echo $lang['info_44'] ?></p>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <p><?php echo $lang['info_35'] ?></p>
+        </div>
+<!--        <div class="col-sm-12 col-md-3">-->
+<!--            <p>--><?php
+//                 echo $lang['info_36'];
+//                 echo " <img src='".APP_PATH_IMAGES."video_small.png'> <a href='javascript:;' onclick=\"popupvid('redcap_overview_brief02','Brief Overview of REDCap')\" style='text-decoration:underline;'>{$lang['info_37']}</a>{$lang['period']} " ;
+//                 echo $lang['info_38'];
+//                 echo " <a href='index.php?action=training' style='text-decoration:underline;'>{$lang['info_06']}</a> ";
+//                 echo $lang['global_14']. $lang['period'];
+//                 ?>
+<!--            </p>-->
+<!--        </div>-->
+        <div class="col-sm-12 col-md-4">
+            <?php
+                // if (trim($homepage_grant_cite) != "") {
+                //     echo "<p>".$lang['info_08'] . "<b>$homepage_grant_cite</b>).</p>";
+                // }
+                echo "<p style='color:#C00000;'><i>".$lang['global_03'].$lang['colon']."</i> ".$lang['info_10']."</p>";
+                // echo "<p>" . $lang['info_11'] . " <a style='text-decoration:underline;' href='". (trim($homepage_contact_url) == '' ? "mailto:$homepage_contact_email" : trim($homepage_contact_url)) ."'>$homepage_contact</a>". $lang['period'] . "</p>";
+            ?>
+        </div>
+    </div>
+
+    <?php
+        $citation_info = $this->getSystemSetting("citation-info");
+        if (!empty($citation_info)) {
+    ?>
+
+    <div>
+        <h2 class="col-sm-12">Citation Information</h2>
+        <div class="col-sm-12 col-md-12">
+            <p><?php echo $citation_info ?></p>
+        </div>
+    </div>
+
+
+    <?php
+        }
+    ?>
+
 
     <div class="row col-sm-12 contact">
         <div class="col-sm-12 col-md-6 map row">

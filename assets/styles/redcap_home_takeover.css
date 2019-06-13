@@ -52,11 +52,21 @@ body {
     z-index:-1;
     transition:opacity .4s;
 }
+
+
+/* Hover on navbar more visible */
 #fixed_nav:hover:after{
-    opacity:.5;
+    opacity:1;
+    background-color: white;
 }
+
+#fixed_nav:hover a {
+    color:#333 !important
+}
+
 #fixed_nav.scrolling{
 }
+
 #fixed_nav.scrolling:after{
     background-color: #fff;
     box-shadow:0 0 3px #333;
@@ -79,7 +89,7 @@ body {
     background-color:initial;
 }
 #fixed_nav a{
-    font-size:77%;
+    /*font-size:85%;*/
     text-transform:uppercase;
     color:#fff !important;
     padding:8px 10px !important;
@@ -129,6 +139,7 @@ body {
 #footer a:link{
     color:#777;
 }
+
 
 /*page sections*/
 #newPageContent > .row:not(.splash){

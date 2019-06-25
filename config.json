@@ -63,7 +63,7 @@
 			"key": "citation-info",
 			"name": "<b>Citation Details</b>",
 			"required": false,
-			"type": "rich-text"
+			"type": "textarea"
 		},
 		{
 			"key": "home-announce",
@@ -75,7 +75,100 @@
 			"key": "home-announce-override",
 			"name": "<b>Custom Home Announce</b>",
 			"required": false,
-			"type": "rich-text"
+			"type": "textarea"
+		},
+		{
+			"key": "splash-info",
+			"name": "<b>Splash Info</b><br>Check to override the default custom text in the splash box",
+			"required": false,
+			"type": "checkbox"
+		},
+		{
+			"key": "splash-info-override",
+			"name": "<b>Custom Splash Info(boxes)</b>",
+			"required": false,
+			"type": "textarea"
+		},
+		{
+			"key": "contact-address",
+			"name": "<b>Map Address</b>",
+			"required": false,
+			"type": "text"
+		},
+		{
+			"key": "redcap-stats",
+			"name": "Redcap Stats Slots",
+			"required": false,
+			"type": "sub_settings",
+			"repeatable": true,
+			"sub_settings": [
+				{
+					"key": "stat-slot",
+					"name": "<b>Stat module</b>",
+					"required": false,
+					"type": "textarea"
+				}
+			]
+		},
+		{
+			"key": "redcap-resources",
+			"name": "Redcap Training and Resources",
+			"required": false,
+			"type": "sub_settings",
+			"repeatable": true,
+			"sub_settings": [
+				{
+					"key": "resource-name",
+					"name": "<b>Resource Name</b>",
+					"required": false,
+					"type": "text"
+				},
+				{
+					"key": "resource-description",
+					"name": "<b>Description</b>",
+					"required": false,
+					"type": "textarea"
+				},
+				{
+					"key": "resource-link",
+					"name": "<b>Resource URL</b>",
+					"required": false,
+					"type": "text"
+				},
+				{
+					"key": "resource-icon",
+					"name": "<b>Resource Icon URL</b>",
+					"required": false,
+					"type": "text"
+				}
+			]
+		},
+	    {
+			"key": "redcap-team",
+			"name": "Redcap Team Members",
+			"required": false,
+			"type": "sub_settings",
+			"repeatable": true,
+			"sub_settings": [
+				{
+					"key": "team-member-name",
+					"name": "<b>Team Member Name</b>",
+					"required": false,
+					"type": "text"
+				},
+				{
+					"key": "team-member-bio",
+					"name": "<b>Team Member Bio</b>",
+					"required": false,
+					"type": "textarea"
+				},
+				{
+					"key": "team-member-pic",
+					"name": "<b>Picture URL</b>",
+					"required": false,
+					"type": "text"
+				}
+			]
 		},
 		{
 			"key": "enable-system-debug-logging",

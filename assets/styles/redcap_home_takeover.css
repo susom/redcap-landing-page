@@ -89,7 +89,7 @@ body {
     background-color:initial;
 }
 #fixed_nav a{
-    /*font-size:85%;*/
+    font-size:85%;
     text-transform:uppercase;
     color:#fff !important;
     padding:8px 10px !important;
@@ -249,15 +249,12 @@ body {
     opacity:.65;
     z-index:-1;
 }
-#newPageContent .row.team,
-#newPageContent .row.features{
-    background-color:#f8f8f8;
-}
+
 #newPageContent .row.stats{
     background-color:#C41E3A;
 }
-#newPageContent .row.contact {
-    background-color:#000;
+#newPageContent > .row:not(.splash):not(.stats):not(.training):nth-child(odd){
+    background-color:#f8f8f8
 }
 
 #newPageContent .row.features{
@@ -346,22 +343,47 @@ body {
 }
 
 
-#newPageContent .contact h2{
-    color:#333;
-    text-align:left;
-    margin-bottom:20px;
-}
+
 #newPageContent .row.contact{
     padding:0;
 }
 .contact .inputform{
-    background:#fff;
     padding:80px 40px;
+    min-height:500px;
 }
+.contact h2{
+    color:#333;
+    text-align:left;
+    margin-bottom:20px;
+}
+.login-container {
+    background: #fff;
+    width: 45%;
+    margin: 0 auto;
+    text-align: Center;
+    padding: 20px;
+    border-radius:10px;
+}
+.login-container form{
+    display:block;
+}
+.contact .login-container form button{
+    float:initial;
+}
+.contact .login-container h2{
+    text-align:Center;
+    color: #8d3c1e;
+}
+
+.login-container + form{
+    display:none;
+}
+
 .contact form{
     margin:0 auto;
     background:none;
     border:none;
+    
 }
 .contact form p{
     margin-bottom:20px;
@@ -499,3 +521,4 @@ body {
     width:500px;
     height:500px;
 }
+

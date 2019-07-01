@@ -253,9 +253,18 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
     <div class="row col-sm-12 stats">
         <h2 class="col-sm-12">REDCap Stats</h2>
         <?php 
-            foreach($stats as $stat){   
-            echo '<div class="col-sm-12 col-md-3">'.$stat["stat-slot"].'</div>';
+            $cnt        = 0;
+            $statslots  = "";
+            foreach($stats as $stat){ 
+                if(empty($stat["stat-slot"])){
+                    continue;
+                }
+                $statslots .= '<div class="col-sm-12 col-md-MDSIZE">'.$stat["stat-slot"].'</div>';
+                $cnt++;
             }
+            $mdsize = round(12/$cnt);
+            $statslots_html = str_replace("MDSIZE",$mdsize,$statslots);
+            echo $statslots_html;
         ?>
     </div>
     <?php   

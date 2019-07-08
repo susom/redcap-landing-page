@@ -244,8 +244,32 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
             </div>
         </div>
     </div> -->
-
     
+    <?php
+        // STATS can be set in the EM Config
+        $stats = array();//$this->getSubSettings("redcap-stats");
+        if(!empty($stats)){
+    ?>
+    <div class="row col-sm-12 stats">
+        <h2 class="col-sm-12">REDCap Stats</h2>
+        <?php 
+            $cnt        = 0;
+            $statslots  = "";
+            foreach($stats as $stat){ 
+                if(empty($stat["stat-slot"])){
+                    continue;
+                }
+                $statslots .= '<div class="col-sm-12 col-md-MDSIZE">'.$stat["stat-slot"].'</div>';
+                $cnt++;
+            }
+            $mdsize         = round(12/$cnt);
+            $statslots_html = str_replace("MDSIZE",$mdsize,$statslots);
+            echo $statslots_html;
+        ?>
+    </div>
+    <?php   
+        }
+    ?>
 
     <div class="row col-sm-12 features">
         <h2 class="col-sm-12"><?php echo $lang['info_12'] ?></h2>
@@ -337,7 +361,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     <?php
         // Resources can be set in the EM Config
-        $resources = $this->getSubSettings("redcap-resources");
+        $resources = array();//$this->getSubSettings("redcap-resources");
         if(!empty($resources)){
     ?>
     <div class="row col-sm-12 training">
@@ -360,7 +384,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     <?php
         // TEam Members can be set in the EM Config
-        $team = $this->getSubSettings("redcap-team");
+        $team = array();//$this->getSubSettings("redcap-team");
         if(!empty($team)){
     ?>
         <div class="row col-sm-12 team">
@@ -381,32 +405,6 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         }
     ?>
 
-    <?php
-        // STATS can be set in the EM Config
-        $stats = $this->getSubSettings("redcap-stats");
-        if(!empty($stats)){
-    ?>
-    <div class="row col-sm-12 stats">
-        <h2 class="col-sm-12">REDCap Stats</h2>
-        <?php 
-            $cnt        = 0;
-            $statslots  = "";
-            foreach($stats as $stat){ 
-                if(empty($stat["stat-slot"])){
-                    continue;
-                }
-                $statslots .= '<div class="col-sm-12 col-md-MDSIZE">'.$stat["stat-slot"].'</div>';
-                $cnt++;
-            }
-            $mdsize         = round(12/$cnt);
-            $statslots_html = str_replace("MDSIZE",$mdsize,$statslots);
-            echo $statslots_html;
-        ?>
-    </div>
-    <?php   
-        }
-    ?>
-    
     <div class="row col-sm-12 about">
         <h2 class="col-sm-12">About REDCap</h2>
         <div class="col-sm-12 col-md-4">

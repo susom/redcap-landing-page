@@ -247,7 +247,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
     
     <?php
         // STATS can be set in the EM Config
-        $stats = $this->getSubSettings("redcap-stats");
+        $stats = $this->getSystemSubSettings("redcap-stats");
         if(!empty($stats)){
     ?>
     <div class="row col-sm-12 stats">
@@ -361,7 +361,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     <?php
         // Resources can be set in the EM Config
-        $resources = $this->getSubSettings("redcap-resources");
+        $resources = $this->getSystemSubSettings("redcap-resources");
         if(!empty($resources)){
     ?>
     <div class="row col-sm-12 training">
@@ -384,7 +384,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     <?php
         // TEam Members can be set in the EM Config
-        $team = $this->getSubSettings("redcap-team");
+        $team = $this->getSystemSubSettings("redcap-team");
         if(!empty($team)){
     ?>
         <div class="row col-sm-12 team">

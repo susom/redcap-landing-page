@@ -62,4 +62,27 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             $this->emDebug("Page is " . PAGE. " - skipping");
         }
     }
+
+    public function getSystemSubSettings($key) {
+        $keys   = [];
+        $config = $this->getSettingConfig($key);
+        if ($config['type'] !== "sub_settings") return false;
+
+        // Get the keys that are part of this subsetting
+        foreach ($config['sub_settings'] as $subSetting) {
+            $keys[] = $subSetting['key'];
+        }
+
+        // Loop through the keys to pull values from $settings
+        $subSettings = [];
+        foreach ($keys as $key) {
+            $values = $settings[$key];
+            foreach ($values as $i => $value) {
+                $subSettings[$i][$key] = $value;
+            }
+        }
+
+        return $subSettings;
+    }
+
 }

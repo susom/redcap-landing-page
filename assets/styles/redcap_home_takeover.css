@@ -2,7 +2,7 @@
 nav.navbar .ml-auto li:last-child,
 nav.navbar .ml-auto li.loggedInUsername,
 .message-center-container,
-body > div:not(#pagecontainer){
+body > div:not(#pagecontainer):not(.ns-box){
     display:none !important;
 }
 body,
@@ -158,14 +158,14 @@ body {
     left: 0; top: 0;
     min-width: 100%; min-height: 100%;
     width: auto; height: auto;
-    z-index: -100;
+    z-index: 0;
     background-size: cover;
 }
 
 #newPageContent .splash {
     min-height:670px;
     position: relative;
-    background:transparent;
+    background:#000;
     overflow:hidden;
     text-transform: uppercase;
 }

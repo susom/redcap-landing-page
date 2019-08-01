@@ -9,7 +9,7 @@ include_once "emLoggerTrait.php";
 class LandingPage extends \ExternalModules\AbstractExternalModule {
 
     use emLoggerTrait;
-    use emNotifsTrait;
+    // use emNotifsTrait;
 
 	function redcap_every_page_before_render($project_id = null){
         global $lang, $redcap_version;

@@ -46,7 +46,7 @@ global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
 
 
 // OVERIDES/DEFAULTS , in the EM Config
-$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getUrl("/assets/images/stanford_quad.jpg", true, true) : $this->getSystemSetting("background-image-url");
+$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getUrl("assets/images/stanford_quad.jpg", true, true) : $this->getSystemSetting("background-image-url");
 $background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getUrl("getVideo.php", true, true) : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement : $this->getSystemSetting("home-announce-override");
@@ -65,43 +65,43 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
     }
 
     .icon{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_wiki.png", true, true) ?>);
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_wiki.png", true, true) ?>);
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_1{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_faq.png", true, true) ?>);
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_faq.png", true, true) ?>);
         background-position:50% 10%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_2{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_videos.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_videos.png", true, true) ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_3{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_hours.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_hours.png", true, true) ?>) ;
         background-position:50% 20%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_4{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_training.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_training.png", true, true) ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_5{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_email.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_email.png", true, true) ?>) ;
         background-position:50% 40%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_6{
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_pro_services.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_pro_services.png", true, true) ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:25%;
@@ -109,98 +109,98 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     .features .bullet div.build_surveys:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_survey.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_survey.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.speed:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_speed.png", true, true) ?>);
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_speed.png", true, true) ?>);
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.export_data:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_export.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_export.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.reporting:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_data.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_data.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.econsent:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_econsent.png", true, true) ?>);
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_econsent.png", true, true) ?>);
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.contact_list:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_contacts.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_contacts.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.scheduling:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_scheduling.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_scheduling.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.mobile:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_mobile.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_mobile.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.send_files:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_send_files.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_send_files.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.save_pdf:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_printer.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_printer.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.advanced:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_advanced.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_advanced.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.api:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_api.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_api.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.data_queries:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_faq.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_faq.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.piping:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("/assets/images/icon_piping.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getUrl("assets/images/icon_piping.png", true, true) ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:20%;

@@ -2,14 +2,15 @@
 namespace Stanford\LandingPage;
 
 include_once "emLoggerTrait.php";
-// include_once "emNotifsTrait.php";
 
 // NOTE That for this to work in shibboleth, you must add a define("NOAUTH",true) to the main index.php before redcap connect.
 
+/**
+ * @property \ExternalModules\FrameworkVersion2\Framework $framework
+ */
 class LandingPage extends \ExternalModules\AbstractExternalModule {
 
     use emLoggerTrait;
-    // use emNotifsTrait;
 
 	function redcap_every_page_before_render($project_id = null){
         global $lang, $redcap_version;
@@ -60,5 +61,29 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             $this->emDebug("Page is " . PAGE. " - skipping");
         }
     }
+
+
+    /**
+     * A work-around for getting subsettings from a system-level - not currently supported
+     * @param $key
+     * @return array
+     */
+    function getSystemSubSettings($key) {
+		$keys = [];
+		$config = $this->getSettingConfig($key);
+		foreach($config['sub_settings'] as $subSetting){
+			$keys[] = $this->prefixSettingKey($subSetting['key']);
+		}
+		$rawSettings = \ExternalModules\ExternalModules::getSystemSettingsAsArray($this->PREFIX);
+		$subSettings = [];
+		foreach($keys as $key){
+			$values = $rawSettings[$key]['value'];
+			for($i=0; $i<count($values); $i++){
+				$value = $values[$i];
+				$subSettings[$i][$key] = $value;
+			}
+		}
+		return $subSettings;
+	}
 
 }

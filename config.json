@@ -3,7 +3,7 @@
 
 	"namespace": "Stanford\\LandingPage",
 
-	"description": "LandingPage",
+	"description": "Custom REDCap Landing Page",
 
 	"documentation": "README.md",
 
@@ -20,6 +20,8 @@
 		}
 
 	],
+
+	"framework-version": 2,
 
 	"permissions": [
 		"redcap_every_page_before_render"

@@ -2,7 +2,7 @@
 namespace Stanford\LandingPage;
 
 include_once "emLoggerTrait.php";
-include_once "emNotifsTrait.php";
+// include_once "emNotifsTrait.php";
 
 // NOTE That for this to work in shibboleth, you must add a define("NOAUTH",true) to the main index.php before redcap connect.
 

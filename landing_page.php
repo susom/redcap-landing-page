@@ -42,11 +42,13 @@ if (!( defined("USERID") && !empty(USERID) )) {
         }
     </style>
     <script>
-        var login = $("<div>").addClass("button").text("Sign In").click(function(){
-            location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
-        });
-        $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
-        $(".nav.ml-auto").append(login);
+        if($(".redcap_signin").length < 1){
+            var login = $("<div>").addClass("button").addClass("redcap_signin").text("Sign In").click(function(){
+                location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
+            });
+            $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
+            $(".nav.ml-auto").append(login);
+        }
     </script>
     <?php
 }
@@ -453,23 +455,6 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
         <div class="col-sm-12 col-md-6 inputform row">
             <?php
-            if (!( defined("USERID") && !empty(USERID) )) {
-                // Not Authenticated
-                ?>
-                <style>
-                    .navbar-nav .nav-item:not(.active) {
-                        display:none !important;
-                    }
-                </style>
-                <script>
-                    var login = $("<div>").addClass("button").text("Sign In").click(function(){
-                        location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
-                    });
-                    $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
-                    $(".nav.ml-auto").append(login);
-                </script>
-                <?php
-            }
             if (defined("USERID") && !empty(USERID)) {
                 ?>
                     <div class="login-container">

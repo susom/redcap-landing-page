@@ -38,6 +38,7 @@
 	},
 
 	"no-auth-pages": [
+		"getAsset"
 	],
 
 	"project-settings": [

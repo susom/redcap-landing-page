@@ -12,24 +12,23 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
     use emLoggerTrait;
 
+    private $LAST_MODIFIED;
+
 	function redcap_every_page_before_render($project_id = null){
         global $lang, $redcap_version;
-
-
         $base = basename(dirname(PAGE_FULL));
 
         if ($base == "Messenger" || PAGE == "cron.php") return;
 
 
-        $this->emDebug("On " . __FUNCTION__,
-            'PAGE:' . PAGE,
-            'BASE: ' . basename(dirname(PAGE_FULL)),
-            'PAGE FULL: ' . PAGE_FULL,
-            'URI: ' . $_SERVER['REQUEST_URI']);//, $_SERVER['asdf']);
+//        $this->emDebug("On " . __FUNCTION__,
+//            'PAGE:' . PAGE,
+//            'BASE: ' . basename(dirname(PAGE_FULL)),
+//            'PAGE FULL: ' . PAGE_FULL,
+//            'URI: ' . $_SERVER['REQUEST_URI']);//, $_SERVER['asdf']);
 
         // Take over REDCap home page
         if ( (PAGE == "index.php" || PAGE == "/") && empty($base) ){
-
             // Lets take over this page and prevent other code from executing
             $this->emDebug("Run Landing Page - " . PAGE);
 
@@ -48,7 +47,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // MUST BE LOGGED IN
             // action=myprojects, create,
             // route=SenditController:upload,
-            // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
+                // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
 
             // ONLY SHOW MESSENGER LINK IF AUTHETICATED
             // nav-link navbar-user-messaging
@@ -56,13 +55,40 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // ONLY SHOW USERNAME AND ICON IF LOGGED IN OTHERWISE SHOW LOGIN BUTTON
             
             include $this->getModulePath() . "/landing_page.php";
+//            include $this->getModulePath() . "/test.php";
+
             $this->exitAfterHook();
         } else {
             $this->emDebug("Page is " . PAGE. " - skipping");
         }
     }
 
+    function redcap_module_save_configuration(){
+        $this->setLastModified();
+    }
 
+    function setLastModified(){
+        $ts = time();
+        $this->setSystemSetting("last_modified",$ts);
+        $this->LAST_MODIFIED = $ts;
+    }
+
+    function getLastModified(){
+	    if(empty($this->LAST_MODIFIED)){
+	        $ts = $this->getSystemSetting("last_modified");
+	        if(empty($ts)){
+                $this->setLastModified();
+            }else{
+                $this->LAST_MODIFIED = $ts;
+            }
+        }
+
+	    return $this->LAST_MODIFIED;
+    }
+
+    function getAssetUrl($file){
+	    return $this->getUrl("getAsset.php?file=".$file."&ts=". $this->getLastModified() , true, true);
+    }
     /**
      * A work-around for getting subsettings from a system-level - not currently supported
      * @param $key

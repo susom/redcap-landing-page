@@ -1,7 +1,6 @@
 <?php
 /** @var \Stanford\LandingPage\LandingPage $this */
 
-
 global $shibboleth_username_field, $auth_meth;
 
 // Is user authenticated?  Because we are doing noauth on index page, we need to manually do this:
@@ -16,16 +15,13 @@ if ($auth_meth == "shibboleth") {
     defined("USERID") or define("USERID", strtolower($userid));
 }
 
-if (defined("USERID")) {
+if (defined("USERID") && !empty(USERID)) {
     // Authenticated
-    $this->emDebug("Authenticated");
+    $this->emDebug("Authenticated", USERID);
 } else {
     // Not Authenticated
     $this->emDebug("Not authenticated");
 }
-
-// $this->loadEmNotifsTrait();
-
 
 $objHtmlPage = new HtmlPage();
 $objHtmlPage->addExternalJS(APP_PATH_JS . "base.js");
@@ -37,7 +33,23 @@ $objHtmlPage->PrintHeader();
 // // Display tabs (except if viewing FAQ in a new window)
 include APP_PATH_VIEWS . 'HomeTabs.php';
 
-
+if (!( defined("USERID") && !empty(USERID) )) {
+    // Not Authenticated
+    ?>
+    <style>
+        .navbar-nav .nav-item:not(.active) {
+            display:none !important;
+        }
+    </style>
+    <script>
+        var login = $("<div>").addClass("button").text("Sign In").click(function(){
+            location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
+        });
+        $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
+        $(".nav.ml-auto").append(login);
+    </script>
+    <?php
+}
 
 // Initialize vars as global since this file might get included inside a function
 global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
@@ -46,14 +58,16 @@ global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
 
 
 // OVERIDES/DEFAULTS , in the EM Config
-$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getUrl("assets/images/stanford_quad.jpg", true, true) : $this->getSystemSetting("background-image-url");
-$background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getUrl("getVideo.php", true, true) : $this->getSystemSetting("background-video-url");
+$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl("stanford_quad.jpg") : $this->getSystemSetting("background-image-url");
+$background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl("stanford_drone.mp4") : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement : $this->getSystemSetting("home-announce-override");
 $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))    ? $homepage_custom_text : $this->getSystemSetting("splash-info-override");
 ?>
-<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true, true) ?>' type='text/css' class='takeover'/>
-<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true, true) ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>
+<!-- <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true, true) ?>' type='text/css' class='takeover'/>
+<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true, true) ?>' type='text/css' class='takeover'/> -->
 <style>
     body {
         background-image:url('<?php echo $body_background_url ?>');
@@ -65,43 +79,43 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
     }
 
     .icon{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_wiki.png", true, true) ?>);
+        background-image:url(<?php echo $this->getAssetUrl("icon_wiki.png") ?>);
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_1{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_faq.png", true, true) ?>);
+        background-image:url(<?php echo $this->getAssetUrl("icon_faq.png") ?>);
         background-position:50% 10%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_2{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_videos.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_videos.png") ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_3{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_hours.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_hours.png") ?>) ;
         background-position:50% 20%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_4{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_training.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_training.png") ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_5{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_email.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_email.png") ?>) ;
         background-position:50% 40%;
         background-repeat: no-repeat;
         background-size:30%;
     }
     .icon_6{
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_pro_services.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_pro_services.png") ?>) ;
         background-position:50% 30%;
         background-repeat: no-repeat;
         background-size:25%;
@@ -109,98 +123,98 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
     .features .bullet div.build_surveys:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_survey.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_survey.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.speed:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_speed.png", true, true) ?>);
+        background-image:url(<?php echo $this->getAssetUrl("icon_speed.png") ?>);
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.export_data:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_export.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_export.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.reporting:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_data.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_data.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.econsent:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_econsent.png", true, true) ?>);
+        background-image:url(<?php echo $this->getAssetUrl("icon_econsent.png") ?>);
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.contact_list:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_contacts.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_contacts.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.scheduling:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_scheduling.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_scheduling.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.mobile:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_mobile.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_mobile.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.send_files:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_send_files.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_send_files.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.save_pdf:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_printer.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_printer.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.advanced:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_advanced.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_advanced.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.api:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_api.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_api.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.data_queries:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_faq.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_faq.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:55%;
     }
     .features .bullet div.piping:after{
         background-color:#fff;
-        background-image:url(<?php echo $this->getUrl("assets/images/icon_piping.png", true, true) ?>) ;
+        background-image:url(<?php echo $this->getAssetUrl("icon_piping.png") ?>) ;
         background-position:50%;
         background-repeat: no-repeat;
         background-size:20%;
@@ -209,7 +223,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 <div id="newPageContent" class="row">
     <div class="row col-sm-12 splash">
         <video autoplay muted loop id="bgvid">
-            <source src="<?php echo $background_video_url ?>" type="video/mp4">
+            <source id="bgvidsrc"  type="video/mp4">
         </video>
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
             <div id="home_announce">
@@ -232,11 +246,11 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         </div>
     </div>
     
-      <?php
+        <?php
         // STATS can be set in the EM Config
         $stats = $this->getSystemSubSettings("redcap-stats");
         if(!empty($stats)){
-    ?>
+        ?>
     <div class="row col-sm-12 stats">
         <h2 class="col-sm-12">REDCap Stats</h2>
         <?php 
@@ -439,20 +453,37 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
         <div class="col-sm-12 col-md-6 inputform row">
             <?php
-            if (defined("USERID")) {
-            ?>
-                <div class="login-container">  
-                    <h2>Do you have a SUnet ID?</h2>   
-                    <p>Use your network username and password to login to REDCap.</p>
-                    <form class="form-buttons is-shortened" method="post" action="/login">
-                        <button type="submit" class="btn btn-primary btn-full-width">Continue</button>
-                        <input type="hidden" name="redirect_url" value="/files">
-                        <input type="hidden" name="request_token" value="b85c1500f691bcf87a3efc43854b4b453a31090025828181e9455e7cc5b425b4">
-                        <input type="hidden" name="login_page_source" value="sso-prompt-login">
-                    </form>
-                    <p><a href="#" class="show_general_form">Don't have a SUnet ID?</a></p>
-                </div>
-            <?php    
+            if (!( defined("USERID") && !empty(USERID) )) {
+                // Not Authenticated
+                ?>
+                <style>
+                    .navbar-nav .nav-item:not(.active) {
+                        display:none !important;
+                    }
+                </style>
+                <script>
+                    var login = $("<div>").addClass("button").text("Sign In").click(function(){
+                        location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
+                    });
+                    $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
+                    $(".nav.ml-auto").append(login);
+                </script>
+                <?php
+            }
+            if (defined("USERID") && !empty(USERID)) {
+                ?>
+                    <div class="login-container">
+                        <h2>Do you have a SUnet ID?</h2>
+                        <p>Use your network username and password to login to REDCap.</p>
+                        <form class="form-buttons is-shortened" method="post" action="/login">
+                            <button type="submit" class="btn btn-primary btn-full-width">Continue</button>
+                            <input type="hidden" name="redirect_url" value="/files">
+                            <input type="hidden" name="request_token" value="b85c1500f691bcf87a3efc43854b4b453a31090025828181e9455e7cc5b425b4">
+                            <input type="hidden" name="login_page_source" value="sso-prompt-login">
+                        </form>
+                        <p><a href="#" class="show_general_form">Don't have a SUnet ID?</a></p>
+                    </div>
+                <?php
             }
             ?>  
             <form id="general_contact">
@@ -484,7 +515,7 @@ $(document).ready( function() {
     $('nav.navbar').detach().insertBefore("#pagecontent").attr("id","fixed_nav");
     $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
     $('.nav.navbar-nav.ml-auto').unwrap();
-    $('.navbar-brand img').attr("src","<?php echo $this->getUrl("assets/images/redcap_logo.png", true, true) ?>");
+    $('.navbar-brand img').attr("src","<?php echo $this->getUrl("assets/images/redcap_logo.png") ?>");
 
     //Add Event to page 
     $(".show_general_form").click(function(){
@@ -510,7 +541,20 @@ $(document).ready( function() {
 //OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 });
 
+
 (function() {
+$(window).bind("load",function(){
+    var tmpimg      = new Image();
+    tmpimg.src      = "<?php echo $body_background_url ?>";
+    tmpimg.onload   = function(){
+        $("#newPageContent .splash").addClass("black");
+        setTimeout(function(){
+            document.getElementById("bgvidsrc").src = "<?php echo $background_video_url?>";
+            document.getElementById("bgvid").load();
+        },100);
+    }
+});
+
 return;
 // create the notification
 var notification = new NotificationFx({

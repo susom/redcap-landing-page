@@ -63,7 +63,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function redcap_module_save_configuration(){
-        disableUserBasedSettingPermissions();
         $this->setLastModified();
     }
 
@@ -75,7 +74,8 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
 
     function getLastModified(){
-	    if(empty($this->LAST_MODIFIED)){
+        disableUserBasedSettingPermissions();
+        if(empty($this->LAST_MODIFIED)){
 	        $ts = $this->getSystemSetting("last_modified");
 	        if(empty($ts)){
                 $this->setLastModified();

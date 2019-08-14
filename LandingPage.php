@@ -61,7 +61,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function setLastModified(){
-        \ExternalModules\ExternalModules::disableUserBasedSettingPermissions();
+	    $this->disableUserBasedSettingPermissions();
         $ts = time();
         $this->setSystemSetting("last_modified",$ts);
         $this->LAST_MODIFIED = $ts;

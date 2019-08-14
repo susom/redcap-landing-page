@@ -5,7 +5,7 @@
 $day_cache      = 86400;
 $week_cache     = 604800;
 $month_cache    = 2628000;
-$year_cache     = 3000;//31536000;
+$year_cache     = 31536000;
 
 // GET FILE NAME OF DESIRED FILE FOR PASS THRU
 $get_file           = isset($_GET['file']) ? $_GET['file'] : null;
@@ -52,42 +52,26 @@ if(!file_exists(($filepath))){
 
     // USE MODIFIED TIME AS ETag, RATHER than OPENING WHOLE FILE AND HASHING THAT
     $modified_time  = filemtime($filepath);
-    $sEtag          = $modified_time;
 
-//    $module->emDebug($_SERVER['HTTP_IF_NONE_MATCH'], $cache_age, $file);
-    //CHECK PASSED BACK ETAG IF STILL THE SAME THEN SEND Truncated HEaders AND RENEW CACHE FOR ANOTHER PERIOD OF TIME
-    if ($_SERVER['HTTP_IF_NONE_MATCH'] == $sEtag) {
-        // Okay, the browser already has the latest version of our file in his cache.
-        // So just tell it that the page was not modified and DON'T send the content
-        header('HTTP/1.1 304 Not Modified', true, 304);
-        header('Cache-Control: max-age='.$cache_age);    //Need this and Etag
-//        header('ETag: ' . $sEtag);    // send a ETag again with the response
-
-        header_remove("Pragma");
-        header_remove("Expires");
-    } else {
-        // MISMATCHED ETag SO OPEN FILE AND SEND IT IN RESPONSE
-        set_time_limit(0);
-        $fh = fopen($filepath, "rb");
-        while (!feof($fh)) {
-            echo fgets($fh);
-        }
-        fclose($fh);
-        $sContent = ob_get_contents(); // collect all outputs in a variable
-        ob_clean();
-
-        // It is important to specify  Cache-Control max-age, and ETag, for all cacheable resources.
-        // Set download headers MUST BE IN THIS ORDER
-        header('HTTP/1.1 200 OK', true, 200);
-        header('Cache-Control: max-age='.$cache_age.', public');
-//        header('ETag: ' . $sEtag);
-        header('Content-Type:  ' . $content_type);
-
-        header('Content-Disposition: attachment; filename="' . $file . '"');
-        header('Content-Length: ' . sprintf("%u", filesize($downloads_folder . $subfolder . $file)));
-
-        header_remove("Pragma");
-        header_remove("Expires");
-        echo $sContent;
+    set_time_limit(0);
+    $fh = fopen($filepath, "rb");
+    while (!feof($fh)) {
+        echo fgets($fh);
     }
+    fclose($fh);
+    $sContent = ob_get_contents(); // collect all outputs in a variable
+    ob_clean();
+
+    // It is important to specify  Cache-Control max-age, and ETag, for all cacheable resources.
+    // Set download headers MUST BE IN THIS ORDER
+    header('HTTP/1.1 200 OK', true, 200);
+    header('Cache-Control: max-age='.$cache_age.', public');
+    header('Content-Type:  ' . $content_type);
+
+    header('Content-Disposition: attachment; filename="' . $file . '"');
+    header('Content-Length: ' . sprintf("%u", filesize($downloads_folder . $subfolder . $file)));
+
+    header_remove("Pragma");
+    header_remove("Expires");
+    echo $sContent;
 }

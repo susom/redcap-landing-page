@@ -20,12 +20,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
         if ($base == "Messenger" || PAGE == "cron.php" || (!empty($_GET))) return;
 
-//        $this->emDebug("On " . __FUNCTION__,
-//            'PAGE:' . PAGE,
-//            'BASE: ' . basename(dirname(PAGE_FULL)),
-//            'PAGE FULL: ' . PAGE_FULL,
-//            'URI: ' . $_SERVER['REQUEST_URI']);//, $_SERVER['asdf']);
-
         // Take over REDCap home page
         if ( (PAGE == "index.php" || PAGE == "/") && empty($base)  ){
             // Lets take over this page and prevent other code from executing
@@ -67,6 +61,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function setLastModified(){
+        \ExternalModules\ExternalModules::disableUserBasedSettingPermissions();
         $ts = time();
         $this->setSystemSetting("last_modified",$ts);
         $this->LAST_MODIFIED = $ts;
@@ -74,7 +69,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
 
     function getLastModified(){
-        disableUserBasedSettingPermissions();
         if(empty($this->LAST_MODIFIED)){
 	        $ts = $this->getSystemSetting("last_modified");
 	        if(empty($ts)){

@@ -35,8 +35,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
                 // header("Location: " . $newUrl);
             }
 
-
-            
+            $this->disableUserBasedSettingPermissions();
             // MUST BE LOGGED IN
             // action=myprojects, create,
             // route=SenditController:upload,
@@ -61,7 +60,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function setLastModified(){
-	    $this->disableUserBasedSettingPermissions();
+
         $ts = time();
         $this->setSystemSetting("last_modified",$ts);
         $this->LAST_MODIFIED = $ts;

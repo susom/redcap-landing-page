@@ -19,7 +19,7 @@ $cache_age          = $year_cache; // Default 1 year
 // SET CONTENT-TYPE
 if(strpos($file, "mp4")){
     $content_type   = "video/mp4";
-    $subfolder      = "";
+    $subfolder      = "video/";
 }else if(strpos($file, "jpg") || strpos($file, "jpeg")){
     $content_type   = "image/jpeg";
 }else if(strpos($file, "gif") ){

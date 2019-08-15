@@ -34,9 +34,9 @@ body {
     position:fixed;
     margin:initial;
     width:100%;
-    min-height:57px;
+    min-height:47px;
     z-index:100;
-    padding:10px !important;
+    padding:10px 10px 5px !important;
     border:none !important;
     background-color:transparent !important;
 }
@@ -83,8 +83,19 @@ body {
 .navbar-brand img{
     padding:0 !important;
     margin:0 !important;
+    border-radius:5px;
+    position:relative;
 }
-
+.navbar-brand img:after{
+    position:Absolute;
+    width:100%;
+    height:100%;
+    background:#fff;
+    opacity:1;
+}
+a.navbar-brand img {
+    width:120px; height:40px;
+}
 #fixed_nav a:hover{
     background-color:initial;
 }
@@ -92,7 +103,7 @@ body {
     font-size:85%;
     text-transform:uppercase;
     color:#fff !important;
-    padding:8px 10px !important;
+    padding:8px 10px 0 !important;
     opacity:.75;
     transition: opacity .20s;
 }
@@ -110,15 +121,23 @@ body {
 }
 #fixed_nav ul {
     float:left;
-    margin:15px 15px 0 50px;
+    margin:10px 15px 0 50px;
 }
 #fixed_nav ul.ml-auto{
     float:right;
-    margin:15px 30px 0 0;
+    margin:10px 30px 0 0;
 }
 .redcap_signin {
     position: relative;
     margin-top: -15px;
+    paddign:5px 10px;
+    background:#0098db;
+    color:#fff;
+}
+#home_announce .button{
+    background:#0098db;
+    color:#fff;
+    text-transform:capitalize;
 }
 #fixed_nav li {
     margin-left:10px;

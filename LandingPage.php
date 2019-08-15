@@ -5,14 +5,12 @@ include_once "emLoggerTrait.php";
 
 // NOTE That for this to work in shibboleth, you must add a define("NOAUTH",true) to the main index.php before redcap connect.
 
-/**
- * @property \ExternalModules\FrameworkVersion2\Framework $framework
- */
 class LandingPage extends \ExternalModules\AbstractExternalModule {
 
     use emLoggerTrait;
 
     private $LAST_MODIFIED;
+    const KEY_DEFAULTS = "DEFAULTS_CREATED";
 
 	function redcap_every_page_before_render($project_id = null){
         global $lang, $redcap_version;
@@ -35,7 +33,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
                 // header("Location: " . $newUrl);
             }
 
-            $this->disableUserBasedSettingPermissions();
             // MUST BE LOGGED IN
             // action=myprojects, create,
             // route=SenditController:upload,
@@ -43,16 +40,25 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
             // ONLY SHOW MESSENGER LINK IF AUTHETICATED
             // nav-link navbar-user-messaging
-
             // ONLY SHOW USERNAME AND ICON IF LOGGED IN OTHERWISE SHOW LOGIN BUTTON
             
             include $this->getModulePath() . "/landing_page.php";
-//            include $this->getModulePath() . "/test.php";
-
             $this->exitAfterHook();
         } else {
             $this->emDebug("Page is " . PAGE. " - skipping");
         }
+    }
+
+    function redcap_module_system_enable(){
+        $this->disableUserBasedSettingPermissions();
+        $defaults = $this->getSystemSetting(self::KEY_DEFAULTS);
+        if(!$defaults){
+            $this->setDefaultConfig();
+        }
+    }
+
+    function setDefaultConfig(){
+        $this->setSystemSetting(self::KEY_DEFAULTS,1);
     }
 
     function redcap_module_save_configuration(){
@@ -60,7 +66,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function setLastModified(){
-
         $ts = time();
         $this->setSystemSetting("last_modified",$ts);
         $this->LAST_MODIFIED = $ts;
@@ -81,7 +86,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     }
 
     function getAssetUrl($file){
-	    return $this->getUrl("getAsset.php?file=".$file."&ts=". $this->getLastModified() , true, true);
+	    return $this->framework->getUrl("getAsset.php?file=".$file."&ts=". $this->getLastModified() , true, true);
     }
     /**
      * A work-around for getting subsettings from a system-level - not currently supported

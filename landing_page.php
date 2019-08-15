@@ -44,9 +44,9 @@ if (!( defined("USERID") && !empty(USERID) )) {
     <script>
         if($(".redcap_signin").length < 1){
             var login = $("<div>").addClass("button").addClass("redcap_signin").text("Sign In").click(function(){
-                location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php';
+                location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php';
             });
-            $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/home/index.php?action=myprojects');
+            $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php?action=myprojects');
             $(".nav.ml-auto").append(login);
         }
     </script>
@@ -68,8 +68,6 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 ?>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>
-<!-- <link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/mini-default.min.css", true, true) ?>' type='text/css' class='takeover'/>
-<link rel='stylesheet' href='<?php echo $this->getUrl("assets/styles/redcap_home_takeover.css", true, true) ?>' type='text/css' class='takeover'/> -->
 <style>
     body {
         background-image:url('<?php echo $body_background_url ?>');
@@ -500,7 +498,7 @@ $(document).ready( function() {
     $('nav.navbar').detach().insertBefore("#pagecontent").attr("id","fixed_nav");
     $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
     $('.nav.navbar-nav.ml-auto').unwrap();
-    $('.navbar-brand img').attr("src","<?php echo $this->getUrl("assets/images/redcap_logo.png") ?>");
+    $('.navbar-brand img').attr("src","<?php echo $this->getAssetUrl("redcap_logo.png") ?>");
 
     //Add Event to page 
     $(".show_general_form").click(function(){

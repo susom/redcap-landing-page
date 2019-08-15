@@ -36,7 +36,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // MUST BE LOGGED IN
             // action=myprojects, create,
             // route=SenditController:upload,
-                // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
+            // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
 
             // ONLY SHOW MESSENGER LINK IF AUTHETICATED
             // nav-link navbar-user-messaging
@@ -57,12 +57,17 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         }
     }
 
-    function setDefaultConfig(){
-        $this->setSystemSetting(self::KEY_DEFAULTS,1);
-    }
-
     function redcap_module_save_configuration(){
         $this->setLastModified();
+    }
+
+    function setDefaultConfig($flag=1){
+        // THIS HAPPENS THE FIRST TIME
+        $this->setSystemSetting(self::KEY_DEFAULTS,$flag);
+    }
+
+    function getDefaultConfig(){
+        return $this->getSystemSetting(self::KEY_DEFAULTS);
     }
 
     function setLastModified(){
@@ -70,7 +75,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         $this->setSystemSetting("last_modified",$ts);
         $this->LAST_MODIFIED = $ts;
     }
-
 
     function getLastModified(){
         if(empty($this->LAST_MODIFIED)){
@@ -110,5 +114,4 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 		}
 		return $subSettings;
 	}
-
 }

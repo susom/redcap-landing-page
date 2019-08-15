@@ -58,11 +58,17 @@ global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
     , $sendit_enabled, $edoc_field_option_enabled, $api_enabled
     , $homepage_contact, $homepage_contact_url, $homepage_contact_email;
 
+// Following Content can be set in the EM Config
+$stats      = $this->getSystemSubSettings("redcap-stats");
+$resources  = $this->getSystemSubSettings("redcap-resources");
+$team       = $this->getSystemSubSettings("redcap-team");
+
 
 // OVERIDES/DEFAULTS , in the EM Config
 $body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl("stanford_quad.jpg") : $this->getSystemSetting("background-image-url");
 $background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl("stanford_drone.mp4") : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
+
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement : $this->getSystemSetting("home-announce-override");
 $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))    ? $homepage_custom_text : $this->getSystemSetting("splash-info-override");
 ?>
@@ -246,12 +252,10 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         </div>
     </div>
     
-        <?php
-        // STATS can be set in the EM Config
-        $stats = $this->getSystemSubSettings("redcap-stats");
+    <?php
         if(!empty($stats)){
-        ?>
-    <div class="row col-sm-12 stats">
+    ?>
+        <div class="row col-sm-12 stats">
         <h2 class="col-sm-12">REDCap Stats</h2>
         <?php 
             $cnt        = 0;
@@ -361,8 +365,6 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
     </div>
 
     <?php
-        // Resources can be set in the EM Config
-        $resources = $this->getSystemSubSettings("redcap-resources");
         if(!empty($resources)){
     ?>
     <div class="row col-sm-12 training">
@@ -379,13 +381,11 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
             }
         ?>
     </div>
-    <?php   
+    <?php
         }
     ?>
 
     <?php
-        // TEam Members can be set in the EM Config
-        $team = $this->getSystemSubSettings("redcap-team");
         if(!empty($team)){
     ?>
         <div class="row col-sm-12 team">
@@ -416,12 +416,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         </div>
         <div class="col-sm-12 col-md-4">
             <?php
-                // if (trim($homepage_grant_cite) != "") {
-                //     echo "<p>".$lang['info_08'] . "<b>$homepage_grant_cite</b>).</p>";
-                // }
                 echo "<p style='color:#C00000;'><i>".$lang['global_03'].$lang['colon']."</i> ".$lang['info_10']."</p>";
-                // echo "<p>" . $lang['info_11'] . " <a style='text-decoration:underline;' href='". (trim($homepage_contact_url) == '' ? "mailto:$homepage_contact_email" : trim($homepage_contact_url)) ."'>$homepage_contact</a>". $lang['period'] . "</p>";
-
                 $citation_info = $this->getSystemSetting("citation-info");
                 if (!empty($citation_info)) {
             ?>
@@ -499,8 +494,9 @@ $(document).ready( function() {
     $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
     $('.nav.navbar-nav.ml-auto').unwrap();
     $('.navbar-brand img').attr("src","<?php echo $this->getAssetUrl("redcap_logo.png") ?>");
+    //OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 
-    //Add Event to page 
+    //Add Event to contact form
     $(".show_general_form").click(function(){
         $(".login-container").slideUp();
         $("#general_contact").fadeIn("fast");
@@ -521,223 +517,19 @@ $(document).ready( function() {
         }
     };
 
-//OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
+    //smoothing the video transitioning in
+    $(window).bind("load",function(){
+        var tmpimg      = new Image();
+        tmpimg.src      = "<?php echo $body_background_url ?>";
+        tmpimg.onload   = function(){
+            $("#newPageContent .splash").addClass("black");
+            setTimeout(function(){
+                document.getElementById("bgvidsrc").src = "<?php echo $background_video_url?>";
+                document.getElementById("bgvid").load();
+            },100);
+        }
+    });
 });
-
-
-(function() {
-$(window).bind("load",function(){
-    var tmpimg      = new Image();
-    tmpimg.src      = "<?php echo $body_background_url ?>";
-    tmpimg.onload   = function(){
-        $("#newPageContent .splash").addClass("black");
-        setTimeout(function(){
-            document.getElementById("bgvidsrc").src = "<?php echo $background_video_url?>";
-            document.getElementById("bgvid").load();
-        },100);
-    }
-});
-
-return;
-// create the notification
-var notification = new NotificationFx({
-
-    // element to which the notification will be appended
-    // defaults to the document.body
-    wrapper : document.body,
-
-    // the message
-    message : '<p>This is a message</p>',
-
-    // layout type: growl|attached|bar|other
-    layout : 'growl',
-
-    // effects for the specified layout:
-    // for growl layout: scale|slide|genie|jelly
-    // for attached layout: flip|bouncyflip
-    // for other layout: boxspinner|cornerexpand|loadingcircle|thumbslider
-    // ...
-    effect : 'slide',
-
-    // notice, warning, error, success
-    // will add class ns-type-warning, ns-type-error or ns-type-success
-    type : 'error',
-
-    // if the user doesn´t close the notification then we remove it 
-    // after the following time
-    ttl : 6000,
-
-    // callbacks
-    onClose : function() { 
-        return false; 
-    },
-    onOpen : function() { 
-        return false; 
-    }
-
-});
-
-// show the notification
-notification.show();
-
-
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<div class="ns-thumb"><img src="http://med.stanford.edu/researchit/about-us/our-teams/_jcr_content/main/panel_builder_316262/panel_0/panel_builder_895065504/panel_0/text_image_1558658034.img.full.high.jpg"/></div><div class="ns-content"><p><a href="#">Zoe Moulder</a> accepted your invitation.</p></div>',
-    layout : 'other',
-    ttl : 6000,
-    effect : 'thumbslider',
-    type : 'notice', // notice, warning, error or success
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>I am using a beautiful spinner from <a href="http://tobiasahlin.com/spinkit/">SpinKit</a></p>',
-    layout : 'other',
-    effect : 'boxspinner',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>This is just a simple notice. Everything is in order and this is a <a href="#">simple link</a>.</p>',
-    layout : 'growl',
-    effect : 'scale',
-    ttl : 9000,
-    type : 'notice', // notice, warning, error or success
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>This notification has slight elasticity to it thanks to <a href="http://bouncejs.com/">bounce.js</a>.</p>',
-    layout : 'growl',
-    effect : 'slide',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>Hello there! I\'m a classic notification but I have some elastic jelliness thanks to <a href="http://bouncejs.com/">bounce.js</a>. </p>',
-    layout : 'growl',
-    effect : 'jelly',
-    ttl : 9000,
-    type : 'notice', // notice, warning, error or success
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>Your preferences have been saved successfully. See all your settings in your <a href="#">profile overview</a>.</p>',
-    layout : 'growl',
-    effect : 'genie',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<span class="icon icon-megaphone"></span><p>You have some interesting news in your inbox. Go <a href="#">check it out</a> now.</p>',
-    layout : 'bar',
-    effect : 'slidetop',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<span class="icon icon-settings"></span><p>Your preferences have been saved successfully. See all your settings in your <a href="#">profile overview</a>.</p>',
-    layout : 'bar',
-    effect : 'exploader',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<p>Your preferences have been saved successfully. See all your settings in your <a href="#">profile overview</a>.</p>',
-    layout : 'attached',
-    effect : 'flip',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-// create the notification
-var notification = new NotificationFx({
-    wrapper : document.body,
-    message : '<span class="icon icon-calendar"></span><p>The event was added to your calendar. Check out all your events in your <a href="#">event overview</a>.</p>',
-    layout : 'attached',
-    effect : 'bouncyflip',
-    ttl : 9000,
-    type : 'notice', // notice, warning or error
-    onClose : function() {
-    }
-});
-
-// show the notification
-notification.show();
-
-})();
-
 </script>
 <?php
 $objHtmlPage->PrintFooter();

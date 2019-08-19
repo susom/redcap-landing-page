@@ -91,6 +91,7 @@ body {
     width:100%;
     height:100%;
     background:#fff;
+    border-radius:5px;
     opacity:1;
 }
 a.navbar-brand img {

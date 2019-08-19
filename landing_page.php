@@ -1,7 +1,10 @@
 <?php
 /** @var \Stanford\LandingPage\LandingPage $this */
 
-global $shibboleth_username_field, $auth_meth;
+// Initialize vars as global since this file might get included inside a function
+global $shibboleth_username_field, $auth_meth, $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
+       , $sendit_enabled, $edoc_field_option_enabled, $api_enabled
+       , $homepage_contact, $homepage_contact_url, $homepage_contact_email;
 
 // Is user authenticated?  Because we are doing noauth on index page, we need to manually do this:
 if ($auth_meth == "shibboleth") {
@@ -15,9 +18,11 @@ if ($auth_meth == "shibboleth") {
     defined("USERID") or define("USERID", strtolower($userid));
 }
 
+$authenticated = false;
 if (defined("USERID") && !empty(USERID)) {
     // Authenticated
     $this->emDebug("Authenticated", USERID);
+    $authenticated = true;
 } else {
     // Not Authenticated
     $this->emDebug("Not authenticated");
@@ -30,47 +35,20 @@ $objHtmlPage->addStylesheet("style.css", 'screen,print');
 $objHtmlPage->addStylesheet("home.css", 'screen,print');
 $objHtmlPage->PrintHeader();
 
-// // Display tabs (except if viewing FAQ in a new window)
-include APP_PATH_VIEWS . 'HomeTabs.php';
-
-if (!( defined("USERID") && !empty(USERID) )) {
-    // Not Authenticated
-    ?>
-    <style>
-        .navbar-nav .nav-item:not(.active) {
-            display:none !important;
-        }
-    </style>
-    <script>
-        if($(".redcap_signin").length < 1){
-            var login = $("<div>").addClass("button").addClass("redcap_signin").text("Sign In").click(function(){
-                location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php';
-            });
-            $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php?action=myprojects');
-            $(".nav.ml-auto").append(login);
-        }
-    </script>
-    <?php
-}
-
-// Initialize vars as global since this file might get included inside a function
-global $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
-    , $sendit_enabled, $edoc_field_option_enabled, $api_enabled
-    , $homepage_contact, $homepage_contact_url, $homepage_contact_email;
-
-// Following Content can be set in the EM Config
-$stats      = $this->getSystemSubSettings("redcap-stats");
-$resources  = $this->getSystemSubSettings("redcap-resources");
-$team       = $this->getSystemSubSettings("redcap-team");
-
-
 // OVERIDES/DEFAULTS , in the EM Config
 $body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl("stanford_quad.jpg") : $this->getSystemSetting("background-image-url");
 $background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl("stanford_drone.mp4") : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 
-$homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement : $this->getSystemSetting("home-announce-override");
-$homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))    ? $homepage_custom_text : $this->getSystemSetting("splash-info-override");
+$homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement    : $this->getSystemSetting("home-announce-override");
+$homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))    ? $homepage_custom_text     : $this->getSystemSetting("splash-info-override");
+
+$stats                  = $this->getSystemSubSettings("redcap-stats");
+$resources              = $this->getSystemSubSettings("redcap-resources");
+$team                   = $this->getSystemSubSettings("redcap-team");
+
+$hmm = $this->getSystemSetting("redcap-stats");
+print_r($hmm);
 ?>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>
@@ -226,6 +204,29 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         background-size:20%;
     }
 </style>
+<?php
+// Display tabs (except if viewing FAQ in a new window)
+include APP_PATH_VIEWS . 'HomeTabs.php';
+if (!$authenticated) {
+    // Not Authenticated
+    ?>
+    <style>
+        .navbar-nav .nav-item:not(.active) {
+            display:none !important;
+        }
+    </style>
+    <script>
+        if($(".redcap_signin").length < 1){
+            var login = $("<div>").addClass("button").addClass("redcap_signin").text("Sign In").click(function(){
+                location.href= app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php';
+            });
+            $(".nav-item.active .nav-link").attr("href", app_path_webroot_full + 'redcap_v' + redcap_version + '/Home/index.php?action=myprojects');
+            $(".nav.ml-auto").append(login);
+        }
+    </script>
+    <?php
+}
+?>
 <div id="newPageContent" class="row">
     <div class="row col-sm-12 splash">
         <video autoplay muted loop id="bgvid">
@@ -234,7 +235,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
             <div id="home_announce">
                 <?php 
-                if (trim($homepage_announcement) != "" && isset($_SESSION['username'])) {
+                if (trim($homepage_announcement) != "" ) {
                     print(nl2br(decode_filter_tags($homepage_announcement)));
                 }
                 ?>
@@ -448,7 +449,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 
         <div class="col-sm-12 col-md-6 inputform row">
             <?php
-            if (defined("USERID") && !empty(USERID)) {
+            if(!$authenticated) {
                 ?>
                     <div class="login-container">
                         <h2>Do you have a SUnet ID?</h2>
@@ -486,6 +487,7 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 </div>
 <script>
 $(document).ready( function() {
+    //START : SETTING UP PAGE FOR TAKE OVER
     // first disable all the css baggage from redcap
     $('link:not(.takeover)').prop("disabled", true);
 
@@ -494,7 +496,7 @@ $(document).ready( function() {
     $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
     $('.nav.navbar-nav.ml-auto').unwrap();
     $('.navbar-brand img').attr("src","<?php echo $this->getAssetUrl("redcap_logo.png") ?>");
-    //OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
+    //END : OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 
     //Add Event to contact form
     $(".show_general_form").click(function(){
@@ -503,7 +505,7 @@ $(document).ready( function() {
         return false;
     });
 
-    //put a timer on the home page announce
+    //put a timer on the home page announce sliding in
     setTimeout(function(){
         $("#home_announce").addClass("show");
     },1500)
@@ -517,7 +519,7 @@ $(document).ready( function() {
         }
     };
 
-    //smoothing the video transitioning in
+    //smoothing the background video transitioning in
     $(window).bind("load",function(){
         var tmpimg      = new Image();
         tmpimg.src      = "<?php echo $body_background_url ?>";

@@ -16,19 +16,21 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         global $lang, $redcap_version;
         $base = basename(dirname(PAGE_FULL));
 
-        if ($base == "Messenger" || PAGE == "cron.php" || (!empty($_GET))) return;
+        // SKIP PAGES NOT index/home
+        if ($base == "Messenger" || PAGE == "cron.php" || (!empty($_GET))) {
+            return;
+        }
 
-        // Take over REDCap home page
+        // HOME PAGE TAKEOVER
         if ( (PAGE == "index.php" || PAGE == "/") && empty($base)  ){
             // Lets take over this page and prevent other code from executing
             $this->emDebug("Run Landing Page - " . PAGE);
 
-            $authenticatedHomeUrl = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/home/index.php";
-
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
             if (!empty($_GET['action']) || !empty($_GET['route'])) {
-                $newUrl = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
+                $authenticatedHomeUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/home/index.php";
+                $newUrl                 = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
                 // header("Location: " . $newUrl);
             }
@@ -39,10 +41,9 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
 
             // ONLY SHOW MESSENGER LINK IF AUTHETICATED
-            // nav-link navbar-user-messaging
             // ONLY SHOW USERNAME AND ICON IF LOGGED IN OTHERWISE SHOW LOGIN BUTTON
-            
             include $this->getModulePath() . "/landing_page.php";
+
             $this->exitAfterHook();
         } else {
             $this->emDebug("Page is " . PAGE. " - skipping");
@@ -51,8 +52,11 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
     function redcap_module_system_enable(){
         $this->disableUserBasedSettingPermissions();
+
         $defaults = $this->getSystemSetting(self::KEY_DEFAULTS);
         if(!$defaults){
+            //THE ACTUAL FIRST TIME THE MODULE IS ENABLED (vs disabled and re-enabled again)
+            //SET SOME DEFAULT SETTING
             $this->setDefaultConfig();
         }
     }
@@ -61,13 +65,37 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         $this->setLastModified();
     }
 
-    function setDefaultConfig($flag=1){
-        // THIS HAPPENS THE FIRST TIME
-        $this->setSystemSetting(self::KEY_DEFAULTS,$flag);
-    }
-
     function getDefaultConfig(){
         return $this->getSystemSetting(self::KEY_DEFAULTS);
+    }
+
+    function setDefaultConfig($flag=1){
+        // THIS HAPPENS THE FIRST TIME ENABLING ONLY
+        $this->setSystemSetting(self::KEY_DEFAULTS,$flag);
+
+        // SET SOME DEFAULT SETTINGS FOR HOME PAGE SLIDE IN
+        $homepage_announcement_html = "";
+        $homepage_announcement_html .= "<h1 style='font-size: 300%;'>Welcome to our HomePage</h1>";
+        $homepage_announcement_html .= "<p>Little bit of sub-text</p>";
+        $this->setSystemSetting("home-announce-override",$homepage_announcement_html);
+
+        $homepage_customtext_html   = "";
+        $homepage_customtext_html  .= "<div class='info_alert'>";
+        $homepage_customtext_html  .= "<h4>Info Box Header 1</h4>";
+        $homepage_customtext_html  .= "<p>Here is some info text</p>";
+        $homepage_customtext_html  .= "<p>Here is some more info text</p>";
+        $homepage_customtext_html  .= "</div>";
+        $homepage_customtext_html  .= "<div class='info_alert'>";
+        $homepage_customtext_html  .= "<h4>Info Box Header 2</h4>";
+        $homepage_customtext_html  .= "<p>Here is some info text</p>";
+        $homepage_customtext_html  .= "<p>Here is some more info text</p>";
+        $homepage_customtext_html  .= "</div>";
+        $this->setSystemSetting("splash-info-override",$homepage_customtext_html);
+
+        // Below are SubSettings
+        // A STAT MODULE
+        // A TRAINING AND RESOURCE
+        // A TEAM MEMBER
     }
 
     function setLastModified(){

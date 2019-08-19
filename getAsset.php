@@ -2,10 +2,10 @@
 /** @var \Stanford\LandingPage\LandingPage $module */
 
 // Cache Time in Seconds
-$day_cache      = 86400;
-$week_cache     = 604800;
-$month_cache    = 2628000;
-$year_cache     = 31536000;
+$day_cache          = 86400;
+$week_cache         = 604800;
+$month_cache        = 2628000;
+$year_cache         = 31536000;
 
 // GET FILE NAME OF DESIRED FILE FOR PASS THRU
 $get_file           = isset($_GET['file']) ? $_GET['file'] : null;
@@ -19,7 +19,7 @@ $cache_age          = $year_cache; // Default 1 year
 // SET CONTENT-TYPE
 if(strpos($file, "mp4")){
     $content_type   = "video/mp4";
-    $subfolder      = "video/";
+    $subfolder      = "assets/video/";
 }else if(strpos($file, "jpg") || strpos($file, "jpeg")){
     $content_type   = "image/jpeg";
 }else if(strpos($file, "gif") ){

@@ -46,9 +46,6 @@ $homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");
-
-$hmm = $this->getSystemSetting("redcap-stats");
-print_r($hmm);
 ?>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>

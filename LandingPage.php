@@ -29,10 +29,10 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
             if (!empty($_GET['action']) || !empty($_GET['route'])) {
-                $authenticatedHomeUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/home/index.php";
+                $authenticatedHomeUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/Home/index.php";
                 $newUrl                 = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
-                // header("Location: " . $newUrl);
+                header("Location: " . $newUrl);
             }
 
             // MUST BE LOGGED IN

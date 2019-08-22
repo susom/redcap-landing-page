@@ -17,7 +17,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         $base = basename(dirname(PAGE_FULL));
 
         // SKIP PAGES NOT index/home
-        if ($base == "Messenger" || PAGE == "cron.php" || (!empty($_GET))) {
+        if ($base == "Messenger" || PAGE == "cron.php") {
             return;
         }
 
@@ -25,7 +25,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
         if ( (PAGE == "index.php" || PAGE == "/") && empty($base)  ){
             // Lets take over this page and prevent other code from executing
             $this->emDebug("Run Landing Page - " . PAGE);
-
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
             if (!empty($_GET['action']) || !empty($_GET['route'])) {
@@ -33,6 +32,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
                 $newUrl                 = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
                 header("Location: " . $newUrl);
+                exit;
             }
 
             // MUST BE LOGGED IN

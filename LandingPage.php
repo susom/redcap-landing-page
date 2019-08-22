@@ -15,11 +15,48 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 	function redcap_every_page_before_render($project_id = null){
         global $lang, $redcap_version;
         $base = basename(dirname(PAGE_FULL));
+        $authenticatedHomeUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/Home/index.php";
+        $authenticatedProjUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/ProjectSetup/index.php";
 
         // SKIP PAGES NOT index/home
         if ($base == "Messenger" || PAGE == "cron.php") {
             return;
         }
+
+
+
+        ?>
+        <script>
+            window.onload = function(){
+               var _input   = $("<input/>").attr("id","pid_jump").attr("type","text").attr("placeholder","Go To PID");
+               var _submit  = $("<button/>").addClass("pid_go").text("Go");
+               var _label   = $("<label/>").addClass("pid_jumper");
+                _label.append(_input).append(_submit);
+               var _navitem = $("<li/>").addClass("nav-item");
+               _navitem.append(_label);
+                $("nav.fixed-top ul").first().find(".nav-item:last-child").after(_navitem);
+
+                _submit.click(function(){
+                    var gotopid   = $("#pid_jump").val();
+                    location.href = "<?php echo $authenticatedProjUrl ?>" + "?pid=" + gotopid;
+                });
+            };
+        </script>
+        <style>
+            #pid_jump {
+                width: 85px;
+                font-size:77%;
+            }
+            .pid_go{
+                font-size:77%;
+            }
+            .pid_jumper{
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        </style>
+        <?php
 
         // HOME PAGE TAKEOVER
         if ( (PAGE == "index.php" || PAGE == "/") && empty($base)  ){
@@ -28,7 +65,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
             if (!empty($_GET['action']) || !empty($_GET['route'])) {
-                $authenticatedHomeUrl   = APP_PATH_WEBROOT_FULL . "redcap_v" . $redcap_version . "/Home/index.php";
                 $newUrl                 = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
                 header("Location: " . $newUrl);

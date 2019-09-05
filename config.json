@@ -80,7 +80,7 @@
 			"key": "home-announce-override",
 			"name": "<b>Custom Home Announce</b>",
 			"required": false,
-			"type": "textarea"
+			"type": "rich-text"
 		},
 		{
 			"key": "splash-info",
@@ -92,7 +92,16 @@
 			"key": "splash-info-override",
 			"name": "<b>Custom Splash Info(boxes)</b>",
 			"required": false,
-			"type": "textarea"
+			"type": "sub_settings",
+			"repeatable": true,
+			"sub_settings": [
+				{
+					"key": "info-box",
+					"name": "<b>Info Box</b>",
+					"required": false,
+					"type": "textarea"
+				}
+			]
 		},
 		{
 			"key": "contact-address",

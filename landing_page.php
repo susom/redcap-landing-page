@@ -41,8 +41,8 @@ $background_video_url   = empty($this->getSystemSetting("background-video-url"))
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement    : $this->getSystemSetting("home-announce-override");
-$homepage_custom_text   = empty($this->getSystemSetting("splash-info-override"))    ? $homepage_custom_text     : $this->getSystemSetting("splash-info-override");
 
+$info_boxes             = $this->getSystemSubSettings("splash-info-override");
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");
@@ -238,16 +238,25 @@ if (!$authenticated) {
                 ?>
             </div>
         </div>
-        <div class="col-sm-12 col-md-offset-1 col-md-4 info_text">
+        <?php
+            if(!empty($info_boxes)){
+        ?>
+            <div class="col-sm-12 col-md-offset-1 col-md-4 info_text">
             <div id="info_text">
-                <?php 
-                if (trim($homepage_custom_text) != "") {
-                    $homepage_custom_text = nl2br(decode_filter_tags($homepage_custom_text));
-                    print($homepage_custom_text);
+            <?php 
+                foreach($info_boxes as $info_box){ 
+                    if(empty($info_box["info-box"])){
+                        continue;
+                    }
+                    $info_texts .= nl2br(decode_filter_tags($info_box["info-box"]));
                 }
-                ?>
+                echo $info_texts;
+            ?>
             </div>
-        </div>
+            </div>
+        <?php   
+            }
+        ?>
     </div>
     
     <?php
@@ -439,7 +448,7 @@ if (!$authenticated) {
                 </div>
                 <style>
                     .mapouter{position:relative;text-align:right;height:100%;width:100%;}
-                    .gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}
+                    .gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;min-height:300px;}
                 </style>
             </div>
         </div>
@@ -493,6 +502,15 @@ $(document).ready( function() {
     $('nav.navbar button.collapsed').addClass("hidden-md").addClass("hidden-lg");
     $('.nav.navbar-nav.ml-auto').unwrap();
     $('.navbar-brand img').attr("src","<?php echo $this->getAssetUrl("redcap_logo.png") ?>");
+    $("#nav-tab-sendit").next().remove();
+    $("#nav-tab-sendit,#nav-tab-help-resources").remove();
+    $(".navbar-nav.ml-auto li:not([id])").remove();
+    var username = $("#nav-tab-logout .nav-link span b");
+    username.text("("+username.text()+")");
+    $("#nav-tab-logout .nav-link span").remove();
+    $("#nav-tab-logout .nav-link").append(username);
+
+
     //END : OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 
     //Add Event to contact form
@@ -500,6 +518,15 @@ $(document).ready( function() {
         $(".login-container").slideUp();
         $("#general_contact").fadeIn("fast");
         return false;
+    });
+
+    $(".navbar-toggler").click(function(){
+        if($(this).parent().hasClass("showmenu")){
+            $(this).parent().removeClass("showmenu");
+        }else{
+            $(this).parent().addClass("showmenu");
+        }
+        return;
     });
 
     //put a timer on the home page announce sliding in
@@ -527,6 +554,18 @@ $(document).ready( function() {
                 document.getElementById("bgvid").load();
             },100);
         }
+    });
+
+    var _input   = $("<input/>").attr("id","pid_jump").attr("type","text").attr("placeholder","Go To PID");
+    var _submit  = $("<button/>").addClass("pid_go").text("Go");
+    var _label   = $("<label/>").addClass("pid_jumper");
+    _label.append(_input).append(_submit);
+    var _navitem = $("<li/>").addClass("nav-item").attr("id", "pid_jumper");
+    _navitem.append(_label);
+    $("nav.fixed-top .navbar-nav.ml-auto").append(_navitem);
+    _submit.click(function(){
+        var gotopid   = $("#pid_jump").val();
+        location.href = "<?php echo $authenticatedProjUrl ?>" + "?pid=" + gotopid;
     });
 });
 </script>

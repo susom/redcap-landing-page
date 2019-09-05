@@ -1,5 +1,4 @@
 .navbar-nav li i,
-nav.navbar .ml-auto li:last-child,
 nav.navbar .ml-auto li.loggedInUsername,
 .message-center-container,
 body > div:not(#pagecontainer):not(.ns-box){
@@ -13,6 +12,7 @@ body,
 html,* {
     font-family: "Open Sans", "Montserrat", "Helvetica Neue", Helvetica, sans-serif !important;
 }
+
 
 /* LETS HIJACK SOME OF THE DEFAULT Mini.css STYLES */
 body,
@@ -29,7 +29,8 @@ body {
 .button{
     border-radius:5px;
 }
-/* NAV STUFF */
+
+/* TOP NAV STUFF */
 #fixed_nav {
     position:fixed;
     margin:initial;
@@ -122,11 +123,11 @@ a.navbar-brand img {
 }
 #fixed_nav ul {
     float:left;
-    margin:10px 15px 0 50px;
+    margin:10px 10px 0 10px;
 }
 #fixed_nav ul.ml-auto{
     float:right;
-    margin:10px 30px 0 0;
+    margin:10px 10px 0 0;
 }
 .redcap_signin {
     position: relative;
@@ -153,17 +154,31 @@ a.navbar-brand img {
     display:none;
 }
 
-/* Do not show send-it on our fancy homepage */
-#nav-tab-sendit {
-    display:none;
-}
-
-/* Do not show Messenger on our fancy homepage */
+/* Do not show send-it, Messenger, or Help/resources on our fancy homepage */
+#nav-tab-help-resources,
+#nav-tab-sendit,
 .navbar-user-messaging {
     display:none;
 }
 
-/* FOOTER STUFF*/
+/*PID JUMP INPUT*/
+#pid_jump {
+    width: 70px;
+    font-size:77%;
+    padding: 0 2px;
+    margin-left:0;
+}
+.pid_go{
+    font-size:77%;
+    padding: 0 2px;
+    margin-left: 0;
+}
+.pid_jumper{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* FOOTER UI*/
 #footer{
     color:#777;
     background-color:#212121;
@@ -385,8 +400,8 @@ a.navbar-brand img {
 .resources h3.icon{
     position: relative;
     top: 50%;
-    transform:translateY(-65%);
-    padding-top:35%;
+    transform: translateY(-100%);
+    padding-top: 35%;
     font-size:88%;
 }
 
@@ -504,6 +519,7 @@ a.navbar-brand img {
 
 .home_announce{
     position:relative;
+    min-height: 520px;
 }
 #home_announce{
     position:absolute;
@@ -520,9 +536,7 @@ a.navbar-brand img {
     border-radius:5px;
     padding:5px 10px;
 }
-.home_announce{
-    position:relative;
-}
+
 .info_text{
     position:relative;
     text-transform:initial;
@@ -570,3 +584,82 @@ a.navbar-brand img {
     height:500px;
 }
 
+
+/* Small devices (tablets, 768px and up) */
+@media (max-width:767px) { 
+    /*FIXED NAV ALTERNATE VIEW FOR SMALL SCREENS*/
+    #fixed_nav{
+        background-color: #fff !important;
+    }
+    #fixed_nav a{
+        color: #333 !important;
+    }
+
+    #fixed_nav .navbar-nav {
+        position:absolute;
+        background:#fff;
+        color:#333;
+        top:65px;
+        right:0;
+        width:200px;
+        height:110px;
+        margin:0;
+
+        display:none;
+    }
+    
+    #fixed_nav.showmenu .navbar-nav{
+        display:block;
+    }
+
+    #fixed_nav .navbar-nav li{
+        display:block;
+    }
+    
+    #fixed_nav .navbar-nav.ml-auto{
+        top:150px;
+        margin:0;
+        float:initial;
+        border-radius:0 0 10px 10px ;
+    } 
+}
+
+
+/*HAMBURGER MENU FOR SMALL SCREEN*/
+.navbar-toggler {
+    position: absolute;
+    right: 30px;
+    padding: 7px 5px 3px;
+}
+
+.navbar-toggler span{
+    display: block;
+    width: 25px;
+    height: 20px;
+    border-top:3px solid #333;
+    font-size: 0;
+    padding: 0;
+    position:relative;
+}
+
+.navbar-toggler span:before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:4px;
+    width: 25px;
+    height: 3px;
+    background:#333;
+    z-index:1;
+}
+
+.navbar-toggler span:after{
+    content:"";
+    position:absolute;
+    top:11px;
+    left:0;
+    width: 25px;
+    height: 3px;
+    background:#333;
+    z-index:2;
+}

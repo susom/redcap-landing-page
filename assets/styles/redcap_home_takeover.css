@@ -130,7 +130,7 @@ a.navbar-brand img {
 }
 .redcap_signin {
     position: relative;
-    margin-top: -15px;
+    margin-top: -3px;
     paddign:5px 10px;
     background:#0098db;
     color:#fff;
@@ -150,6 +150,16 @@ a.navbar-brand img {
     text-transform:capitalize;
 }
 #fixed_nav li i {
+    display:none;
+}
+
+/* Do not show send-it on our fancy homepage */
+#nav-tab-sendit {
+    display:none;
+}
+
+/* Do not show Messenger on our fancy homepage */
+.navbar-user-messaging {
     display:none;
 }
 

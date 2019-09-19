@@ -509,8 +509,6 @@ $(document).ready( function() {
     username.text("("+username.text()+")");
     $("#nav-tab-logout .nav-link span").remove();
     $("#nav-tab-logout .nav-link").append(username);
-
-
     //END : OK THAT IS GOOD FOR SETTING UP THE PAGE FOR TAKE OVER
 
     //Add Event to contact form

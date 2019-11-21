@@ -2,11 +2,11 @@
 /** @var \Stanford\LandingPage\LandingPage $this */
 
 // Initialize vars as global since this file might get included inside a function
-global $shibboleth_username_field, $auth_meth, $homepage_announcement, $homepage_grant_cite, $homepage_custom_text
+global $shibboleth_username_field, $auth_meth, $homepage_announcement, $homepage_customtext,  $homepage_grant_cite, $homepage_custom_text
        , $sendit_enabled, $edoc_field_option_enabled, $api_enabled
        , $homepage_contact, $homepage_contact_url, $homepage_contact_email;
 
-// Is user authenticated?  Because we are doing noauth on index page, we need to manually do this:
+// Is user authenticated?  If we are doing noauth on index page, we need to manually do this:
 if ($auth_meth == "shibboleth") {
     if (!empty($shibboleth_username_field)) {
         // Custom username field
@@ -21,13 +21,15 @@ if ($auth_meth == "shibboleth") {
 $authenticated = false;
 if (defined("USERID") && !empty(USERID)) {
     // Authenticated
-    $this->emDebug("Authenticated", USERID);
     $authenticated = true;
+    $this->emDebug("Authenticated", USERID);
 } else {
     // Not Authenticated
     $this->emDebug("Not authenticated");
 }
 
+// EVERYTHING BELOW IS PRINTED OUT AND INJECTED INTO THE REDCap homepage
+// BUILD NEW PAGE WITH DEFAULT HEADER AND INCLUDES then PRINT ONTO PAGE
 $objHtmlPage = new HtmlPage();
 $objHtmlPage->addExternalJS(APP_PATH_JS . "base.js");
 $objHtmlPage->addStylesheet("jquery-ui.min.css", 'screen,print');
@@ -35,21 +37,24 @@ $objHtmlPage->addStylesheet("style.css", 'screen,print');
 $objHtmlPage->addStylesheet("home.css", 'screen,print');
 $objHtmlPage->PrintHeader();
 
-// OVERIDES/DEFAULTS , in the EM Config
-$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl("stanford_quad.jpg") : $this->getSystemSetting("background-image-url");
-$background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl("stanford_drone.mp4") : $this->getSystemSetting("background-video-url");
+// OVERIDES/DEFAULTS, SET in the EM Config in Control Settings
+$default_bg_image       = "stanford_quad.jpg";
+$default_bg_video       = "stanford_drone.mp4";
+$body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl($default_bg_image) : $this->getSystemSetting("background-image-url");
+$background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl($default_bg_video) : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement    : $this->getSystemSetting("home-announce-override");
-
-$info_boxes             = $this->getSystemSubSettings("splash-info-override");
+$info_boxes             = empty($this->getSystemSetting("splash-info-override"))  ? $homepage_customtext    : $this->getSystemSetting("splash-info-override");
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");
 ?>
+<!-- USE the getAssetUrl() method to fetch and cache files -->
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>
 <style>
+    <!-- THESE IMAGES ARE INCLUDED WITH THE EM, CALL THEM HERE WITH getAssetURL rather than through CSS -->
     body {
         background-image:url('<?php echo $body_background_url ?>');
         background-repeat: no-repeat;
@@ -205,7 +210,7 @@ $team                   = $this->getSystemSubSettings("redcap-team");
 // Display tabs (except if viewing FAQ in a new window)
 include APP_PATH_VIEWS . 'HomeTabs.php';
 if (!$authenticated) {
-    // Not Authenticated
+    // Not Authenticated , HIDE NAVE BAR ITEMS AND SHOW LOGIN BUTTON
     ?>
     <style>
         .navbar-nav .nav-item:not(.active) {
@@ -224,6 +229,7 @@ if (!$authenticated) {
     <?php
 }
 ?>
+<!-- CUSTOM HOME PAGE BODY HTML PLACED HERE -->
 <div id="newPageContent" class="row">
     <div class="row col-sm-12 splash">
         <video autoplay muted loop id="bgvid">
@@ -493,7 +499,7 @@ if (!$authenticated) {
 </div>
 <script>
 $(document).ready( function() {
-    //START : SETTING UP PAGE FOR TAKE OVER
+    //START : SETTING UP PAGE FOR TAKE OVER , THIS BLOCK OF JS MODIFYS DOM TO SET UP INJECTION OF ABOVE CUSTOM HTML
     // first disable all the css baggage from redcap
     $('link:not(.takeover)').prop("disabled", true);
 
@@ -518,6 +524,7 @@ $(document).ready( function() {
         return false;
     });
 
+    // Add Event for small view slide menu
     $(".navbar-toggler").click(function(){
         if($(this).parent().hasClass("showmenu")){
             $(this).parent().removeClass("showmenu");
@@ -532,7 +539,7 @@ $(document).ready( function() {
         $("#home_announce").addClass("show");
     },1500)
 
-    //monitor the scroll of the page for potential interactions
+    //monitor the scroll of the page for potential interactive things
     window.onscroll = function () {
         if(window.scrollY > 57){
             $("#fixed_nav").addClass("scrolling");
@@ -554,6 +561,7 @@ $(document).ready( function() {
         }
     });
 
+    //PID GOTO JUMP
     var _input   = $("<input/>").attr("id","pid_jump").attr("type","text").attr("placeholder","Go To PID");
     var _submit  = $("<button/>").addClass("pid_go").text("Go");
     var _label   = $("<label/>").addClass("pid_jumper");

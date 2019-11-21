@@ -45,9 +45,6 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             }
 
             // MUST BE LOGGED IN
-            // action=myprojects, create,
-            // route=SenditController:upload,
-            // => APP_PATH_WEBROOT_FULL . "redcap_v" . VERSION . "/home/index.php?" ...
 
             // ONLY SHOW MESSENGER LINK IF AUTHETICATED
             // ONLY SHOW USERNAME AND ICON IF LOGGED IN OTHERWISE SHOW LOGIN BUTTON
@@ -129,6 +126,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
     function getAssetUrl($file){
 	    return $this->framework->getUrl("getAsset.php?file=".$file."&ts=". $this->getLastModified() , true, true);
     }
+    
     /**
      * A work-around for getting subsettings from a system-level - not currently supported
      * @param $key

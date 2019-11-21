@@ -24,7 +24,7 @@
 	"framework-version": 2,
 
 	"permissions": [
-		"redcap_every_page_before_render"
+		 "redcap_every_page_before_render"
 		,"redcap_module_save_configuration"
 		,"redcap_module_system_enable"
 	],
@@ -43,12 +43,7 @@
 	],
 
 	"project-settings": [
-		{
-			"key": "enable-project-debug-logging",
-			"name": "<b>Enable Debug Logging</b><i>(Requires emLogger)</i>",
-			"required": false,
-			"type": "checkbox"
-	    }
+	
 	],
 
 	"system-settings": [

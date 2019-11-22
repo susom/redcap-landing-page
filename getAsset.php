@@ -13,13 +13,13 @@ $file               = $get_file ? $get_file : "stanford_drone.mp4";
 
 // SETTING SUB FOLDERS TO RESTRICT FOLDER TO PICK FILES FROM
 $content_type       = "text/plain";
-$subfolder          = "assets/images/";
+$subfolder          = "/assets/images/";
 $cache_age          = $year_cache; // Default 1 year
 
 // SET CONTENT-TYPE
 if(strpos($file, "mp4")){
     $content_type   = "video/mp4";
-    $subfolder      = "assets/video/";
+    $subfolder      = "/assets/video/";
 }else if(strpos($file, "jpg") || strpos($file, "jpeg")){
     $content_type   = "image/jpeg";
 }else if(strpos($file, "gif") ){
@@ -28,11 +28,11 @@ if(strpos($file, "mp4")){
     $content_type   = "image/png";
 }else if(strpos($file, "css") ){
     $content_type   = "text/css";
-    $subfolder      = "assets/styles/";
+    $subfolder      = "/assets/styles/";
     $cache_age      = $month_cache;
 }else if(strpos($file, "js") ){
     $content_type   = "text/javascript";
-    $subfolder      = "assets/js/";
+    $subfolder      = "/assets/js/";
     $cache_age      = $month_cache;
 }
 

@@ -23,8 +23,12 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
             return;
         }
 
-        // HOME PAGE TAKEOVER
-        if ( (PAGE == "index.php" || PAGE == "/") && empty($base)  ){
+        // incase the redcap install isnt at "/"  , i.e. "/redcap/";
+        $app_root = basename(APP_PATH_WEBROOT_FULL);
+
+        // HOME PAGE TAKEOVER, MAKE SURE ITS A ONE TIME ONLY CHECK, AVOID INFINITE REDIRECT
+        if (   (PAGE == "$app_root/index.php" && $base == $app_root) 
+            || ((PAGE == "index.php" || PAGE == "/") && empty($base))  ){
             // IF AUTH METHOD IS SHIBBOLETH,
             // index.php page in web root must be set to NO AUTH
             if(!defined("NOAUTH") && $auth_meth === "shibboleth"){

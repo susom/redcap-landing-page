@@ -563,15 +563,18 @@ $(document).ready( function() {
 
     //PID GOTO JUMP
     var _input   = $("<input/>").attr("id","pid_jump").attr("type","text").attr("placeholder","Go To PID");
-    var _submit  = $("<button/>").addClass("pid_go").text("Go");
     var _label   = $("<label/>").addClass("pid_jumper");
-    _label.append(_input).append(_submit);
+    _label.append(_input);
     var _navitem = $("<li/>").addClass("nav-item").attr("id", "pid_jumper");
     _navitem.append(_label);
     $("nav.fixed-top .navbar-nav.ml-auto").append(_navitem);
-    _submit.click(function(){
+    
+    _input.keypress(function (e) {
+      if (e.which == 13) {
         var gotopid   = $("#pid_jump").val();
         location.href = "<?php echo $authenticatedProjUrl ?>" + "?pid=" + gotopid;
+        return false;    //<---- Add this line
+      }
     });
 });
 </script>

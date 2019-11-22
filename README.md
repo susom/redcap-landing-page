@@ -4,6 +4,8 @@ This EM will replace the current REDCap landing page with a custom styled landin
 
 ##Setup
 
+> *make sure in Control Center > General Configuration > "Redcap base URL" is set appropriately (ie http://[DOMAIN]/)*
+
 By installing the EM, visiting the [REDCap] or [REDCap]/index.php pages will inject javascript which will modify the client side DOM and 
 display the custom landing page.
 

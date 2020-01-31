@@ -49,14 +49,19 @@ $info_boxes             = empty($this->getSystemSetting("splash-info-override"))
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");
+
+$show_bg_video          = empty($this->getSystemSetting("background-video-toggle")) ? true : false;
 ?>
 <!-- USE the getAssetUrl() method to fetch and cache files -->
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>
 <style>
     <!-- THESE IMAGES ARE INCLUDED WITH THE EM, CALL THEM HERE WITH getAssetURL rather than through CSS -->
-    body {
-        background-image:url('<?php echo $body_background_url ?>');
+    <!-- for some reason the first style class def below a comment gets ignored? so put a dummy .junk class there -->
+    .junk{}
+
+    body{
+        background-image:url('<?php echo $body_background_url ?>') !important;
         background-repeat: no-repeat;
     }
     .team figure{
@@ -232,9 +237,11 @@ if (!$authenticated) {
 <!-- CUSTOM HOME PAGE BODY HTML PLACED HERE -->
 <div id="newPageContent" class="row">
     <div class="row col-sm-12 splash">
-        <video autoplay muted loop id="bgvid">
-            <source id="bgvidsrc"  type="video/mp4">
-        </video>
+        <?php if($show_bg_video){ ?>
+            <video autoplay muted loop id="bgvid">
+                <source id="bgvidsrc"  type="video/mp4">
+            </video>
+        <?php } ?>
         <div class="col-sm-12 col-md-offset-1 col-md-5 home_announce">
             <div id="home_announce">
                 <?php 
@@ -553,7 +560,11 @@ $(document).ready( function() {
         var tmpimg      = new Image();
         tmpimg.src      = "<?php echo $body_background_url ?>";
         tmpimg.onload   = function(){
+
+            <?php if($show_bg_video) { ?>
             $("#newPageContent .splash").addClass("black");
+            <?php } ?>
+            
             setTimeout(function(){
                 document.getElementById("bgvidsrc").src = "<?php echo $background_video_url?>";
                 document.getElementById("bgvid").load();

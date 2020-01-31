@@ -60,6 +60,12 @@
 			"type": "text"
 		},
 		{
+			"key": "background-video-toggle",
+			"name": "<b>Background Video Off Toggle</b><br>Check to turn off BG Video",
+			"required": false,
+			"type": "checkbox"
+		},
+		{
 			"key": "citation-info",
 			"name": "<b>Citation Details</b>",
 			"required": false,

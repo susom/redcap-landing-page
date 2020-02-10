@@ -487,7 +487,9 @@ if (!$authenticated) {
             <form id="general_contact">
                 <h2>Contact Us</h2>
                 <p>If you require assistance or have any questions about REDCap, please contact.</p>
-                <div class="input-group vertical">
+
+                <a href="mailto:redcap-help@lists.stanford.edu?subject=REDCap Information Request" class="button inverse">Send us an Email!</a>
+                <!-- <div class="input-group vertical">
                     <label for="fullname">Name</label>
                     <input type="text" id="fullname" placeholder="Your Name"/>
                 </div>
@@ -498,8 +500,8 @@ if (!$authenticated) {
                 <div class="input-group vertical">
                     <label for="message">Message</label>
                     <textarea id="message" placeholder="Your Message"></textarea>
-                </div>
-                <button class="inverse large">Submit</button>
+                </div> 
+                <button class="inverse large">Submit</button>-->
             </form>
         </div>
     </div>

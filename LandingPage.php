@@ -6,7 +6,6 @@ include_once "emLoggerTrait.php";
 // NOTE That for this to work in shibboleth, you must add a define("NOAUTH",true) to the main index.php before redcap connect.
 
 class LandingPage extends \ExternalModules\AbstractExternalModule {
-
     use emLoggerTrait;
 
     private $LAST_MODIFIED;
@@ -39,13 +38,14 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
             // Lets take over this page and prevent other code from executing
             $this->emDebug("Run Landing Page - " . PAGE);
+
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
             if (!empty($_GET['action']) || !empty($_GET['route'])) {
                 $newUrl = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
                 header("Location: " . $newUrl);
-                exit;
+                $this->exitAfterHook();
             }
 
             // MUST BE LOGGED IN
@@ -153,4 +153,15 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 		}
 		return $subSettings;
 	}
+
+    // TODO: Calculate and store metrics
+
+    /**
+     * Gets called each hour - use to update summary charts and graphs
+     */
+    function hourly_cron() {
+
+    }
+
+
 }

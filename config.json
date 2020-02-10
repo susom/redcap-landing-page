@@ -193,16 +193,6 @@
 	    }
 	],
 
-	"crons": [
-	   {
-           "cron_name": "hourly_cron",
-           "cron_description": "Cron that runs every 60 minutes check for jobs to run",
-           "method": "cron",
-           "cron_frequency": "3600",
-           "cron_max_run_time": "1800"
-        }
-
-	],
 
 	"compatibility": {
 		"php-version-min": "",

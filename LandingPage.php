@@ -41,7 +41,7 @@ class LandingPage extends \ExternalModules\AbstractExternalModule {
 
             // Check for arguments that require authenticated home page
             // By redirecting to home, we will skip this every_page hook and force normal redcap authentication
-            if (!empty($_GET['action']) || !empty($_GET['route'])) {
+            if (!empty($_GET['action']) || !empty($_GET['route']) || !empty($_GET["user_verify"]) ) {
                 $newUrl = $authenticatedHomeUrl . "?" . $_SERVER['QUERY_STRING'];
                 $this->emDebug("NEW URL: " . $newUrl);
                 header("Location: " . $newUrl);

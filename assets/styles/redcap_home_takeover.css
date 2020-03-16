@@ -157,8 +157,9 @@ a.navbar-brand img {
 /* Do not show send-it, Messenger, or Help/resources on our fancy homepage */
 #nav-tab-help-resources,
 #nav-tab-sendit,
+#nav-tab-profile,
 .navbar-user-messaging {
-    display:none;
+    display:none !important;
 }
 
 /*PID JUMP INPUT*/
@@ -526,6 +527,7 @@ a.navbar-brand img {
     top:35%;
     left:-800px;
     transition:left 4s;
+    text-shadow:1px 1px 1px #333;
 }
 #home_announce.show{
     left:0;

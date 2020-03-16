@@ -549,11 +549,12 @@ $(document).ready( function() {
     },1500)
 
     //monitor the scroll of the page for potential interactive things
+    $("#fixed_nav").addClass("scrolling");
     window.onscroll = function () {
         if(window.scrollY > 57){
-            $("#fixed_nav").addClass("scrolling");
+            // $("#fixed_nav").addClass("scrolling");
         }else{
-            $("#fixed_nav").removeClass("scrolling");
+            // $("#fixed_nav").removeClass("scrolling");
         }
     };
 

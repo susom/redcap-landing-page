@@ -111,6 +111,12 @@
 			"type": "text"
 		},
 		{
+			"key": "goog-analytics-id",
+			"name": "<b>Google Analytics ID</b>",
+			"required": false,
+			"type": "text"
+		},
+		{
 			"key": "redcap-stats",
 			"name": "Redcap Stats Slots",
 			"required": false,

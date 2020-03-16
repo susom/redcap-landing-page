@@ -49,9 +49,17 @@ $info_boxes             = empty($this->getSystemSetting("splash-info-override"))
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");
-
-$show_bg_video          = empty($this->getSystemSetting("background-video-toggle")) ? true : false;
+$team                   = $this->getSystemSubSettings("redcap-team");
+$goog_analytics_id      = $this->getSystemSetting("goog-analytics-id");
 ?>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $goog_analytics_id ?>"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '<?php echo $goog_analytics_id ?>');
+</script>
 <!-- USE the getAssetUrl() method to fetch and cache files -->
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("mini-default.min.css") ?>' type='text/css' class='takeover'/>
 <link rel='stylesheet' href='<?php echo $this->getAssetUrl("redcap_home_takeover.css") ?>' type='text/css' class='takeover'/>

@@ -112,7 +112,7 @@
 		},
 		{
 			"key": "goog-analytics-id",
-			"name": "<b>Google Analytics ID</b>",
+			"name": "<b>Google Analytics ID (i.e; UA-xxxxxxxx-x)</b>",
 			"required": false,
 			"type": "text"
 		},

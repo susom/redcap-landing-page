@@ -45,7 +45,7 @@ $background_video_url   = empty($this->getSystemSetting("background-video-url"))
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));
 
 $homepage_announcement  = empty($this->getSystemSetting("home-announce-override"))  ? $homepage_announcement    : $this->getSystemSetting("home-announce-override");
-$info_boxes             = empty($this->getSystemSetting("splash-info-override"))  ? $homepage_customtext    : $this->getSystemSetting("splash-info-override");
+$info_boxes             = empty($this->getSystemSetting("splash-info-override"))  ? $homepage_customtext    : $this->getSystemSubSettings("splash-info-override");
 $stats                  = $this->getSystemSubSettings("redcap-stats");
 $resources              = $this->getSystemSubSettings("redcap-resources");
 $team                   = $this->getSystemSubSettings("redcap-team");

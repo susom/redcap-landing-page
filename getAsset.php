@@ -11,6 +11,9 @@ $year_cache         = 31536000;
 $get_file           = isset($_GET['file']) ? $_GET['file'] : null;
 $file               = $get_file ? $get_file : "stanford_drone.mp4";
 
+// Quick fix to prevent file transversal
+$file = preg_replace("/\.\.\//", "", $file);
+
 // SETTING SUB FOLDERS TO RESTRICT FOLDER TO PICK FILES FROM
 $content_type       = "text/plain";
 $subfolder          = "/assets/images/";
@@ -42,6 +45,8 @@ $script_name 		= basename(__FILE__);
 $end_char 			= strpos($real_path, $script_name);
 $downloads_folder 	= substr($real_path, 0 , $end_char);
 $filepath           = $downloads_folder . $subfolder . $file;
+
+
 
 //MAKE SURE FILE EXISTS
 $module->emDebug("Inside getAsset.php:");

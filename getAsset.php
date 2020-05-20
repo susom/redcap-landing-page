@@ -11,9 +11,6 @@ $year_cache         = 31536000;
 $get_file           = isset($_GET['file']) ? $_GET['file'] : null;
 $file               = $get_file ? $get_file : "stanford_drone.mp4";
 
-// Quick fix to prevent file transversal
-$file = preg_replace("/\.\.\//", "", $file);
-
 // SETTING SUB FOLDERS TO RESTRICT FOLDER TO PICK FILES FROM
 $content_type       = "text/plain";
 $subfolder          = "/assets/images/";
@@ -40,19 +37,21 @@ if(strpos($file, "mp4")){
 }
 
 // GET ABS PATH TO FILE
-$real_path  		= realpath(__FILE__);
-$script_name 		= basename(__FILE__);
-$end_char 			= strpos($real_path, $script_name);
-$downloads_folder 	= substr($real_path, 0 , $end_char);
-$filepath           = $downloads_folder . $subfolder . $file;
+/* 
+double layer of protection against directory traversal
+first : remove the damn ../
+second : check the absolute (realpath) 
 
+The path provided by the user is sent to the storage path. Then realpath is used to convert this path to an absolute path. If the absolute path begins with the storage path everything is okay, otherwise not.
+*/
+$file               = preg_replace("/\.\.\//", "", $file);
+$storagePath        = dirname(__FILE__);
+$filepath           = $storagePath . $subfolder . $file;
+$checkpath          = realpath($filepath);
 
-
-//MAKE SURE FILE EXISTS
-$module->emDebug("Inside getAsset.php:");
-if(!file_exists(($filepath))){
-    header('HTTP/1.1 404 Not Found');
-} else {
+// now serve the file, if path is real, and file exists
+if( strpos($checkpath, $storagePath."/assets") === 0 && file_exists($filepath) ){
+    //Path is okay
     ob_start(); // collect all outputs in a buffer
 
     // USE MODIFIED TIME AS ETag, RATHER than OPENING WHOLE FILE AND HASHING THAT
@@ -74,9 +73,16 @@ if(!file_exists(($filepath))){
     header('Content-Type:  ' . $content_type);
 
     header('Content-Disposition: attachment; filename="' . $file . '"');
-    header('Content-Length: ' . sprintf("%u", filesize($downloads_folder . $subfolder . $file)));
+    header('Content-Length: ' . sprintf("%u", filesize($filepath)));
 
     header_remove("Pragma");
     header_remove("Expires");
     echo $sContent;
+} else {
+   //User wants to gain access into a forbidden area.
+   header('HTTP/1.1 404 Not Found');
 }
+
+$module->emDebug("Inside getAsset.php:");
+
+// exit;

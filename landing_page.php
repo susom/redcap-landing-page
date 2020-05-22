@@ -32,7 +32,7 @@ if (defined("USERID") && !empty(USERID)) {
 // BUILD NEW PAGE WITH DEFAULT HEADER AND INCLUDES then PRINT ONTO PAGE
 $objHtmlPage = new HtmlPage();
 $objHtmlPage->addExternalJS(APP_PATH_JS . "base.js");
-$objHtmlPage->addStylesheet("jquery-ui.min.css", 'screen,print');
+// $objHtmlPage->addStylesheet("jquery-ui.min.css", 'screen,print');
 $objHtmlPage->addStylesheet("style.css", 'screen,print');
 $objHtmlPage->addStylesheet("home.css", 'screen,print');
 $objHtmlPage->PrintHeader();

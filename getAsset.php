@@ -10,6 +10,8 @@ $year_cache         = 31536000;
 // GET FILE NAME OF DESIRED FILE FOR PASS THRU
 $get_file           = isset($_GET['file']) ? $_GET['file'] : null;
 $file               = $get_file ? $get_file : "stanford_drone.mp4";
+$file               = preg_replace("/.*\/|\.{2,}/", "", $file);
+$extension          = strtolower( pathinfo($file, PATHINFO_EXTENSION) );
 
 // SETTING SUB FOLDERS TO RESTRICT FOLDER TO PICK FILES FROM
 $content_type       = "text/plain";
@@ -17,23 +19,26 @@ $subfolder          = "/assets/images/";
 $cache_age          = $year_cache; // Default 1 year
 
 // SET CONTENT-TYPE
-if(strpos($file, "mp4")){
+$bad_ext = false;
+if($extension ==  "mp4"){
     $content_type   = "video/mp4";
     $subfolder      = "/assets/video/";
-}else if(strpos($file, "jpg") || strpos($file, "jpeg")){
+}else if( $extension == "jpg" || $extension == "jpeg" ){
     $content_type   = "image/jpeg";
-}else if(strpos($file, "gif") ){
+}else if( $extension == "gif" ){
     $content_type   = "image/gif";
-}else if(strpos($file, "png") ){
+}else if($extension == "png" ){
     $content_type   = "image/png";
-}else if(strpos($file, "css") ){
+}else if($extension == "css" ){
     $content_type   = "text/css";
     $subfolder      = "/assets/styles/";
     $cache_age      = $month_cache;
-}else if(strpos($file, "js") ){
+}else if($extension ==  "js" ){
     $content_type   = "text/javascript";
     $subfolder      = "/assets/js/";
     $cache_age      = $month_cache;
+}else{
+    $bad_ext = true;
 }
 
 // GET ABS PATH TO FILE
@@ -44,13 +49,13 @@ second : check the absolute (realpath)
 
 The path provided by the user is sent to the storage path. Then realpath is used to convert this path to an absolute path. If the absolute path begins with the storage path everything is okay, otherwise not.
 */
-$file               = preg_replace("/\.\.\//", "", $file);
+
 $storagePath        = dirname(__FILE__);
 $filepath           = $storagePath . $subfolder . $file;
 $checkpath          = realpath($filepath);
 
 // now serve the file, if path is real, and file exists
-if( strpos($checkpath, $storagePath."/assets") === 0 && file_exists($filepath) ){
+if( strpos($checkpath, $storagePath."/assets") === 0 && file_exists($filepath) && !$bad_ext){
     //Path is okay
     ob_start(); // collect all outputs in a buffer
 

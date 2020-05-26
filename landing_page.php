@@ -299,7 +299,38 @@ if (!$authenticated) {
             $statslots_html = str_replace("MDSIZE",$mdsize,$statslots);
             echo $statslots_html;
         ?>
-    </div>
+            <Style>
+                
+            </Style>
+
+<!--            <a name="facts"  class="anchors">Fast Stats</a>-->
+            <section id="stats">
+                    <aside class="stat1">
+                        <h3>1,531,590</h3>
+                        <p>Surveys Taken</p>
+                    </aside>
+
+                    <aside class="stat2">
+                        <h3>34</h3>
+                        <p>Open Sales Force Tickets</p>
+                    </aside>
+
+                    <aside class="stat3">
+                        <h3>0</h3>
+                        <p>Median Days Sales Force Tickets Open to Close</p>
+                    </aside>
+
+                    <aside class="stat4">
+                        <h3>3.7K</h3>
+                        <p>Production Databases</p>
+                    </aside>
+
+                    <aside class="stat5">
+                        <h3>990</h3>
+                        <p>Collaborators Helped During Office Hours</p>
+                    </aside>
+            </section>
+        </div>
     <?php   
         }
     ?>
@@ -598,7 +629,190 @@ $(document).ready( function() {
         return false;    //<---- Add this line
       }
     });
+
+
+
+
+
+
+    // STAT ANIMATIONS
+    var $window = $(window);
+    var animvars    = {};
+    animvars.facts  = {};
+
+    $window.scroll(function() {
+        var winscrollTop	= $window.scrollTop(); //KEEPS COUNT OF TOP OF VIEWPORT RELATIVE TO PAGE
+
+        //FAST FACTS
+        if ( winscrollTop > animvars.facts.start && winscrollTop <= animvars.facts.stop) {
+            checkBlur(winscrollTop, animvars.facts.targetstart1 , "aside.stat1");
+            checkBlur(winscrollTop, animvars.facts.targetstart2 , "aside.stat2");
+            checkBlur(winscrollTop, animvars.facts.targetstart3 , "aside.stat3");
+            checkBlur(winscrollTop, animvars.facts.targetstart4 , "aside.stat4");
+            checkBlur(winscrollTop, animvars.facts.targetstart5 , "aside.stat5");
+        }
+    });
+
+    function checkBlur(winscrollTop, target, sel) {
+        if(winscrollTop > target) {
+            if( !$(sel).hasClass("animated") ){
+                $(sel).addClass("animated");
+                if(!$(sel + " h3").hasClass("busy")) doBlur(sel + " h3",0);
+                if(!$(sel + " p").hasClass("busy")) doBlur(sel + " p",0);
+            }
+        } else {
+            if($(sel).hasClass("animated")){ //no more reverse
+                $(sel).removeClass("animated");
+                //if(!$(sel + " h3").hasClass("busy")) doBlur(sel + " h3",animvars.facts.initblurbig);
+                //if(!$(sel + " p").hasClass("busy")) doBlur(sel + " p",animvars.facts.initblursmall);
+            }
+        }
+    }
+
+    function doBlur(sel,target) {
+        var blurx = 0, blury = 0, blurcolor = "#fff";
+        $(sel).addClass("busy");
+
+        function blurText() {
+            var tshadow = $(sel).css("text-shadow").split("px");
+            var curblur	= parseFloat(tshadow[2]);
+
+            if(curblur != target){
+                if(curblur < target) {
+                    curblur++;
+                }else{
+                    curblur--
+                }
+                $(sel).css("text-shadow", blurcolor + " " + blurx + " " + blury + " "  + curblur + "px");
+            }else{
+                clearInterval(nIntervId);
+                $(sel).removeClass("busy");
+            }
+        }
+
+        var nIntervId = setInterval(blurText, 15);
+    }
+
+    function scrollPageToPx(targetpx,speed) {
+        $('html, body').animate({scrollTop:targetpx}, speed);
+        return false;
+    }
 });
+// SAVE THIS FOR REFERENCE BACKROUND POSITION , ANIMATION and PLUGIN BELOW
+function animSetup(){ //DO THIS IN CASE PEOPLE DRAG THE SCREEN HEIGHT AROUND (ANNOYING CONSIDERING WHATS THE POINT? IF THESE ARE RESPONSIVE TO DEVICES NOT TO WEB DEVELOPERS PLAYING WITH SCREEN SIZE)
+    viewheight 	= $(window).height(); //CURRENT VIEWPORT
+    midview = Math.round(viewheight/2 + fnheight); //CENTER OF SCREEN + floating nav height
+
+    if(screenres == "tablet") {
+        animvars.overview.animdist		= 185; //animation distance (pixels)
+        animvars.mission.animdisthand	= 245;
+        animvars.mission.animdistmus	= 160;
+        animvars.platform.animdist 		= 440;
+    } else {
+        animvars.platform.animdist 		= 600;
+        animvars.overview.animdist		= 245;
+        animvars.mission.animdisthand	= 330;
+        animvars.mission.animdistmus	= 230;
+    }
+
+    if($("body").hasClass("aboutus")){
+        animvars.overview.handoffset	= $("#ovHand").offset();
+        animvars.overview.inithandpos	= $("#ovHand").position(); //initial position of element to animate
+        animvars.overview.stop			= animvars.overview.handoffset.top - midview + Math.round($("#ovHand").height()/2); //stop animating when the content is at midscreen
+        animvars.overview.start			= animvars.overview.stop - animvars.overview.animdist; //start animation at animation distance above section bottom
+
+        animvars.mission.handoffset		= $("#misHand").offset();
+        animvars.mission.inithandpos	= $("#misHand").position();
+        animvars.mission.initmuspos		= $("#misMusic").position();
+        animvars.mission.stop			= animvars.mission.handoffset.top - midview + Math.round($("#misHand").height()/2);
+        animvars.mission.start			= animvars.mission.stop - animvars.mission.animdisthand;
+
+        animvars.facts.initblurbig		= 30;
+        animvars.facts.initblursmall	= 20;
+        animvars.facts.stop				= seoffset.top + midview
+        animvars.facts.start			= sdoffset.top - midview;
+        animvars.facts.bluroffset1		= $("aside.stat1").offset();
+        animvars.facts.bluroffset2		= $("aside.stat2").offset();
+        animvars.facts.bluroffset3		= $("aside.stat3").offset();
+        animvars.facts.bluroffset4		= $("aside.stat4").offset();
+        animvars.facts.bluroffset5		= $("aside.stat5").offset();
+        animvars.facts.targetstart1		= animvars.facts.bluroffset1.top - midview;
+        animvars.facts.targetstart2		= animvars.facts.bluroffset2.top - midview;
+        animvars.facts.targetstart3		= animvars.facts.bluroffset3.top - midview;
+        animvars.facts.targetstart4		= animvars.facts.bluroffset4.top - midview;
+        animvars.facts.targetstart5		= animvars.facts.bluroffset5.top - midview;
+
+        animvars.leadership.animdistx	= 210;
+        animvars.leadership.animdisty	= 195;
+        animvars.leadership.centerview	= $("#leadership dl:first h2").offset();
+        animvars.leadership.bgpos		= getBackgroundPosition("#bganim");
+        animvars.leadership.initposx	= animvars.leadership.bgpos.x;
+        animvars.leadership.initposy	= animvars.leadership.bgpos.y;
+        animvars.leadership.stop		= animvars.leadership.centerview.top - midview;
+        animvars.leadership.start		= animvars.leadership.stop - animvars.leadership.animdisty;
+    }else if($("body").hasClass("howitworks") && 1==2){
+        animvars.platform.offset		= $("#wierdsphere").offset();
+        animvars.platform.initpos		= $("#wierdsphere").position(); //initial position of element to animate
+        animvars.platform.stop			= animvars.platform.offset.top - midview + Math.round($("#wierdsphere").height()/2); //stop animating when the content is at midscreen
+        animvars.platform.start			= animvars.platform.stop; //start animation at animation distance above section bottom
+    }
+
+}
+function animBg(sel,xORy,targetpx,speed){
+    speed = speed || 500;
+    var curposo	= getBackgroundPosition(sel),
+        x = curposo.x , y = curposo.y;
+
+    if (xORy == "x") {
+        x = targetpx;
+    } else {
+        y = targetpx;
+    }
+
+    $(sel).stop().animate(
+        {backgroundPosition:"(" + x + "px " + y + "px)"},
+        {duration:500}
+    );
+}
+function getBackgroundPosition(sel) {
+    var obj = {};
+
+    pos = $(sel).css('backgroundPosition').split(' ');
+    obj.x = parseFloat(pos[0].substring(0, pos[0].length-2));
+    obj.y = parseFloat(pos[1].substring(0, pos[1].length-2));
+    return obj;
+}
+/**
+ *BACKGROUND ANIMATION PLUG IN
+ * @author Alexander Farkas
+ * v. 1.02
+ */
+(function($) {
+    $.extend($.fx.step,{
+        backgroundPosition: function(fx) {
+            if (fx.state === 0 && typeof fx.end == 'string') {
+                var start = $.curCSS(fx.elem,'backgroundPosition');
+                start = toArray(start);
+                fx.start = [start[0],start[2]];
+                var end = toArray(fx.end);
+                fx.end = [end[0],end[2]];
+                fx.unit = [end[1],end[3]];
+            }
+            var nowPosX = [];
+            nowPosX[0] = ((fx.end[0] - fx.start[0]) * fx.pos) + fx.start[0] + fx.unit[0];
+            nowPosX[1] = ((fx.end[1] - fx.start[1]) * fx.pos) + fx.start[1] + fx.unit[1];
+            fx.elem.style.backgroundPosition = nowPosX[0]+' '+nowPosX[1];
+
+            function toArray(strg){
+                strg = strg.replace(/left|top/g,'0px');
+                strg = strg.replace(/right|bottom/g,'100%');
+                strg = strg.replace(/([0-9\.]+)(\s|\)|$)/g,"$1px$2");
+                var res = strg.match(/(-?[0-9\.]+)(px|\%|em|pt)\s(-?[0-9\.]+)(px|\%|em|pt)/);
+                return [parseFloat(res[1],10),res[2],parseFloat(res[3],10),res[4]];
+            }
+        }
+    });
+})(jQuery);
 </script>
 <?php
 $objHtmlPage->PrintFooter();

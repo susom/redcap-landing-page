@@ -8,7 +8,7 @@ $month_cache        = 2628000;
 $year_cache         = 31536000;
 
 // GET FILE NAME OF DESIRED FILE FOR PASS THRU
-$get_file           = isset($_GET['file']) ? $_GET['file'] : null;
+$get_file           = isset($_GET['file']) ? filter_var($_GET['file'], FILTER_SANITIZE_STRING) : null;
 $file               = $get_file ? $get_file : "stanford_drone.mp4";
 $file               = preg_replace("/.*\/|\.{2,}/", "", $file);
 $extension          = strtolower( pathinfo($file, PATHINFO_EXTENSION) );

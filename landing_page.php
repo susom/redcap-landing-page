@@ -340,26 +340,26 @@ if (!$authenticated) {
         <h2 class="col-sm-12"><?php echo $lang['info_12'] ?></h2>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="build_surveys">
-                <h5><?php echo $lang['info_13'] ?></h5>
-                <p><?php echo $lang['info_14'] ?></p>
+                <h5><?php echo $lang['info_47'] ?></h5>
+                <p><?php echo $lang['info_48'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="speed">
                 <h5><?php echo $lang['info_15'] ?></h5>
-                <p><?php echo $lang['info_16'] ?></p>
+                <p><?php echo $lang['info_49'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="export_data">
                 <h5><?php echo $lang['info_19'] ?></h5>
-                <p><?php echo $lang['info_20'] ?></p>
+                <p><?php echo $lang['info_57'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="reporting">
-                <h5><?php echo $lang['info_23'] ?></h5>
-                <p><?php echo $lang['info_24'] ?></p>
+                <h5><?php echo $lang['info_55'] ?></h5>
+                <p><?php echo $lang['info_56'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
@@ -388,8 +388,8 @@ if (!$authenticated) {
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="send_files">
-                <h5><?php echo $lang['info_21'] ?></h5>
-                <p><?php echo $lang['info_22'] ?></p>
+                <h5><?php echo $lang['info_58'] ?></h5>
+                <p><?php echo $lang['info_59'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
@@ -400,8 +400,8 @@ if (!$authenticated) {
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="advanced">
-                <h5><?php echo $lang['info_13'] ?></h5>
-                <p><?php echo $lang['info_13'] ?></p>
+                <h5><?php echo $lang['info_50'] ?></h5>
+                <p><?php echo $lang['info_28'] ?>, <?php echo $lang['info_29'] ?>, <?php echo $lang['info_30'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
@@ -412,8 +412,8 @@ if (!$authenticated) {
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="data_queries">
-                <h5><?php echo $lang['info_39'] ?></h5>
-                <p><?php echo $lang['info_40'] ?></p>
+                <h5><?php echo $lang['info_53'] ?></h5>
+                <p><?php echo $lang['info_54'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">

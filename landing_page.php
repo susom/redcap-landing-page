@@ -369,15 +369,9 @@ if (!$authenticated) {
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
-            <div class="contact_list">
-                <h5><?php echo $lang['info_32'] ?></h5>
-                <p><?php echo $lang['info_33'] ?></p>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 bullet">
             <div class="scheduling">
-                <h5><?php echo $lang['global_25'] ?></h5>
-                <p><?php echo $lang['info_18'] ?></p>
+                <h5><?php echo $lang['global_60'] ?></h5>
+                <p><?php echo $lang['info_61'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
@@ -394,8 +388,8 @@ if (!$authenticated) {
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="save_pdf">
-                <h5><?php echo $lang['info_25'] ?></h5>
-                <p><?php echo $lang['info_26'] ?></p>
+                <h5><?php echo $lang['info_51'] ?></h5>
+                <p><?php echo $lang['info_52'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
@@ -406,20 +400,14 @@ if (!$authenticated) {
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="api">
-                <h5>REDCap API</h5>
-                <p><?php echo $lang['info_31'] ?></p>
+                <h5><?php echo $lang['info_62'] ?></h5>
+                <p><?php echo $lang['info_63'] ?>API<?php echo $lang['info_64'] ?></p>
             </div>
         </div>
         <div class="col-sm-12 col-md-6 bullet">
             <div class="data_queries">
                 <h5><?php echo $lang['info_53'] ?></h5>
                 <p><?php echo $lang['info_54'] ?></p>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 bullet">
-            <div class="piping">
-                <h5><?php echo $lang['info_41'] ?></h5>
-                <p><?php echo $lang['info_42'] ?></p>
             </div>
         </div>
     </div>

@@ -299,10 +299,9 @@ if (!$authenticated) {
             $statslots_html = str_replace("MDSIZE",$mdsize,$statslots);
             echo $statslots_html;
         ?>
-            <Style>
-                
-            </Style>
 
+<?php 
+/*
 <!--            <a name="facts"  class="anchors">Fast Stats</a>-->
             <section id="stats">
                     <aside class="stat1">
@@ -330,6 +329,8 @@ if (!$authenticated) {
                         <p>Collaborators Helped During Office Hours</p>
                     </aside>
             </section>
+*/
+?>
         </div>
     <?php   
         }

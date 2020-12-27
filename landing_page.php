@@ -40,6 +40,7 @@ $objHtmlPage->PrintHeader();
 // OVERIDES/DEFAULTS, SET in the EM Config in Control Settings
 $default_bg_image       = "stanford_quad.jpg";
 $default_bg_video       = "stanford_drone.mp4";
+$show_bg_video          = empty($this->getSystemSetting("background-video-toggle")) ? true : false;
 $body_background_url    = empty($this->getSystemSetting("background-image-url"))    ? $this->getAssetUrl($default_bg_image) : $this->getSystemSetting("background-image-url");
 $background_video_url   = empty($this->getSystemSetting("background-video-url"))    ? $this->getAssetUrl($default_bg_video) : $this->getSystemSetting("background-video-url");
 $urlencoded_addy        = empty($this->getSystemSetting("contact-address"))         ? urlencode("Vanderbilt University") : urlencode($this->getSystemSetting("contact-address"));

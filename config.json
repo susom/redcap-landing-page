@@ -40,6 +40,7 @@
 
 	"no-auth-pages": [
 		"getAsset"
+		,"index"
 	],
 
 	"project-settings": [

@@ -533,10 +533,11 @@ a.navbar-brand img {
     left:0;
 }
 .splash a.button{
-    padding-left: 30px;
-    padding-right:30px;
-    border-radius:5px;
-    padding:5px 10px;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 160%;
+    box-shadow: 1px 1px 3px 1px #333;
+    margin: 20px 0;
 }
 
 .info_text{
